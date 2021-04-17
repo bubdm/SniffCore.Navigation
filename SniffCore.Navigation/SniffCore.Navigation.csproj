@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SniffCore.Dialogs\SniffCore.Dialogs.csproj" />
+    <ProjectReference Include="..\SniffCore.MessageBoxes\SniffCore.MessageBoxes.csproj" />
+    <ProjectReference Include="..\SniffCore.PleaseWaits\SniffCore.PleaseWaits.csproj" />
+    <ProjectReference Include="..\SniffCore.Windows\SniffCore.Windows.csproj" />
+  </ItemGroup>
+
+</Project>
