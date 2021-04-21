@@ -14,7 +14,7 @@ namespace SniffCore.Navigation
 {
     public sealed class NavigationService : INavigationService
     {
-        private static readonly Dictionary<object, WeakReference> _displayControls = new Dictionary<object, WeakReference>();
+        private static readonly Dictionary<object, WeakReference> _navigationPresenter = new Dictionary<object, WeakReference>();
         private readonly IDialogProvider _dialogProvider;
         private readonly IMessageBoxProvider _messageBoxProvider;
         private readonly IPleaseWaitProvider _pleaseWaitProvider;
@@ -46,10 +46,34 @@ namespace SniffCore.Navigation
             }
             else if (viewModel is IDelayedAsyncLoader delayedAsyncLoader)
             {
-                await ShowWindow(delayedAsyncLoader, () => window.Show());
-            }
+                var loadingProgress = new LoadingProgress();
+                var isCanceled = false;
 
-            window.Show();
+                void LoadingProgressOnProgressUpdated(object sender, ProgressDataEventArgs e)
+                {
+                    _pleaseWaitProvider.HandleProgress(e.Data);
+                }
+
+                void LoadingProgressOnProgressCanceled(object sender, LoadingCanceledEventArgs e)
+                {
+                    isCanceled = true;
+                    _pleaseWaitProvider.HandleCanceled(e.Data);
+                }
+
+                loadingProgress.ProgressUpdated += LoadingProgressOnProgressUpdated;
+                loadingProgress.ProgressCanceled += LoadingProgressOnProgressCanceled;
+                _pleaseWaitProvider.Show();
+                await delayedAsyncLoader.LoadAsync(loadingProgress);
+                loadingProgress.ProgressUpdated -= LoadingProgressOnProgressUpdated;
+                loadingProgress.ProgressCanceled -= LoadingProgressOnProgressCanceled;
+                _pleaseWaitProvider.Close();
+                if (!isCanceled)
+                    window.Show();
+            }
+            else
+            {
+                window.Show();
+            }
         }
 
         public Task<bool?> ShowModalWindowAsync(object windowKey, object viewModel)
@@ -68,8 +92,28 @@ namespace SniffCore.Navigation
 
             if (viewModel is IDelayedAsyncLoader delayedAsyncLoader)
             {
-                await ShowWindow(delayedAsyncLoader, () => { });
-                return window.ShowDialog();
+                var loadingProgress = new LoadingProgress();
+                var isCanceled = false;
+
+                void LoadingProgressOnProgressUpdated(object sender, ProgressDataEventArgs e)
+                {
+                    _pleaseWaitProvider.HandleProgress(e.Data);
+                }
+
+                void LoadingProgressOnProgressCanceled(object sender, LoadingCanceledEventArgs e)
+                {
+                    isCanceled = true;
+                    _pleaseWaitProvider.HandleCanceled(e.Data);
+                }
+
+                loadingProgress.ProgressUpdated += LoadingProgressOnProgressUpdated;
+                loadingProgress.ProgressCanceled += LoadingProgressOnProgressCanceled;
+                _pleaseWaitProvider.Show();
+                await delayedAsyncLoader.LoadAsync(loadingProgress);
+                loadingProgress.ProgressUpdated -= LoadingProgressOnProgressUpdated;
+                loadingProgress.ProgressCanceled -= LoadingProgressOnProgressCanceled;
+                _pleaseWaitProvider.Close();
+                return isCanceled ? null : window.ShowDialog();
             }
 
             return window.ShowDialog();
@@ -89,6 +133,35 @@ namespace SniffCore.Navigation
             if (window == null)
                 throw new InvalidOperationException($"The window with the key '{windowKey}' cannot be closed. It not open anymore or got not opened by INavigationService.Show[Modal]WindowAsync");
             window.Close();
+        }
+
+        public async Task ShowControlAsync(object hostId, object controlKey, object viewModel)
+        {
+            RemoveDeadNavigationPresenter();
+            if (!_navigationPresenter.TryGetValue(hostId, out var reference))
+                throw new InvalidOperationException($"For the ID '{hostId}' no NavigationPresenter is registered");
+
+            var control = _windowProvider.GetNewControl(controlKey);
+            control.DataContext = viewModel;
+            var host = (NavigationPresenter) reference.Target;
+            if (viewModel is IAsyncLoader asyncLoader)
+            {
+                host.Content = control;
+                await asyncLoader.LoadAsync();
+            }
+            else if (viewModel is IDelayedAsyncLoader delayedAsyncLoader)
+            {
+                var loadingProgress = new LoadingProgress();
+                host.Content = null;
+                host.PleaseWaitProgress = loadingProgress;
+                await delayedAsyncLoader.LoadAsync(loadingProgress);
+                host.PleaseWaitProgress = null;
+                host.Content = control;
+            }
+            else
+            {
+                host.Content = control;
+            }
         }
 
         public MessageBoxResult ShowMessageBox(string messageBoxText)
@@ -156,33 +229,6 @@ namespace SniffCore.Navigation
             return window;
         }
 
-        private async Task ShowWindow(IDelayedAsyncLoader delayedAsyncLoader, Action callback)
-        {
-            var loadingProgress = new LoadingProgress();
-
-            void LoadingProgressOnProgressUpdated(object sender, ProgressDataEventArgs e)
-            {
-                _pleaseWaitProvider.HandleProgress(e.Data);
-            }
-
-            void LoadingProgressOnProgressCanceled(object sender, LoadingCanceledEventArgs e)
-            {
-                _pleaseWaitProvider.HandleCanceled(e.Data);
-            }
-
-            loadingProgress.ProgressUpdated += LoadingProgressOnProgressUpdated;
-            loadingProgress.ProgressCanceled += LoadingProgressOnProgressCanceled;
-            _pleaseWaitProvider.Show();
-
-            await delayedAsyncLoader.LoadAsync(loadingProgress);
-
-            loadingProgress.ProgressUpdated -= LoadingProgressOnProgressUpdated;
-            loadingProgress.ProgressCanceled -= LoadingProgressOnProgressCanceled;
-            _pleaseWaitProvider.Close();
-
-            callback?.Invoke();
-        }
-
         private void HandleWindowClosing(object sender, CancelEventArgs e)
         {
             var window = (Window) sender;
@@ -190,23 +236,23 @@ namespace SniffCore.Navigation
             (window.DataContext as IDisposable)?.Dispose();
         }
 
-        internal static void UnregisterDisplayControl(object controlKey)
+        internal static void UnregisterPresenter(object controlKey)
         {
-            _displayControls.Remove(controlKey);
-            RemoveDeadDisplayControls();
+            RemoveDeadNavigationPresenter();
+            _navigationPresenter.Remove(controlKey);
         }
 
-        private static void RemoveDeadDisplayControls()
+        private static void RemoveDeadNavigationPresenter()
         {
-            var dead = _displayControls.Where(x => !x.Value.IsAlive).ToList();
+            var dead = _navigationPresenter.Where(x => !x.Value.IsAlive).ToList();
             foreach (var pair in dead)
-                _displayControls.Remove(pair.Key);
+                _navigationPresenter.Remove(pair.Key);
         }
 
-        internal static void RegisterDisplayControl(object controlKey, DisplayControl control)
+        internal static void RegisterPresenter(object controlKey, NavigationPresenter control)
         {
-            RemoveDeadDisplayControls();
-            _displayControls[controlKey] = new WeakReference(control);
+            RemoveDeadNavigationPresenter();
+            _navigationPresenter[controlKey] = new WeakReference(control);
         }
     }
 }

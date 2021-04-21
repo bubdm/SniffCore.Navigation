@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace SniffCore.Windows
 {
@@ -6,5 +7,7 @@ namespace SniffCore.Windows
     {
         Window GetNewWindow(object windowKey);
         Window GetOpenWindow(object windowKey);
+
+        UserControl GetNewControl(object controlKey);
     }
 }

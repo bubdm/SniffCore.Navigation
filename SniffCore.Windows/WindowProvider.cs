@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace SniffCore.Windows
 {
     public sealed class WindowProvider : IWindowProvider
     {
+        private readonly Dictionary<object, Type> _controls;
         private readonly Dictionary<object, Window> _openWindows;
         private readonly Dictionary<object, Type> _windows;
 
         public WindowProvider()
         {
             _windows = new Dictionary<object, Type>();
+            _controls = new Dictionary<object, Type>();
             _openWindows = new Dictionary<object, Window>();
         }
 
@@ -37,6 +40,17 @@ namespace SniffCore.Windows
             return _openWindows[windowKey];
         }
 
+        public UserControl GetNewControl(object controlKey)
+        {
+            if (controlKey == null)
+                throw new ArgumentNullException(nameof(controlKey));
+
+            if (!_controls.TryGetValue(controlKey, out var controlType))
+                throw new InvalidOperationException($"For the control key '{controlKey}' no user control is registered");
+
+            return (UserControl) Activator.CreateInstance(controlType);
+        }
+
         private void HandleWindowClosed(object sender, EventArgs e)
         {
             var window = (Window) sender;
@@ -45,9 +59,14 @@ namespace SniffCore.Windows
             _openWindows.Remove(knownPair.Key);
         }
 
-        public void Register<TWindow>(object windowKey) where TWindow : Window
+        public void RegisterWindow<TWindow>(object windowKey) where TWindow : Window
         {
             _windows[windowKey] = typeof(TWindow);
+        }
+
+        public void RegisterControl<TControl>(object controlKey) where TControl : UserControl
+        {
+            _controls[controlKey] = typeof(TControl);
         }
     }
 }
