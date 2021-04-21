@@ -15,6 +15,8 @@ namespace SniffCore.Navigation
         void SetDialogResult(object windowKey, bool? dialogResult);
         void Close(object windowKey);
 
+        Task ShowControlAsync(object hostId, object controlKey, object viewModel);
+
         MessageBoxResult ShowMessageBox(string messageBoxText);
         MessageBoxResult ShowMessageBox(object ownerWindowKey, string messageBoxText);
         MessageBoxResult ShowMessageBox(string messageBoxText, string caption);
