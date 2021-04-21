@@ -1,31 +1,35 @@
-﻿using System.Windows;
+﻿using System;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using SniffCore.Navigation.External;
+using SniffCore.PleaseWaits;
 
 namespace SniffCore.Navigation
 {
     public class DisplayControl : Control
     {
-        internal static readonly DependencyProperty ViewModelProperty =
-            DependencyProperty.Register("ViewModel", typeof(object), typeof(DisplayControl), new PropertyMetadata(null));
+        public static readonly DependencyProperty ViewModelProperty =
+            DependencyProperty.Register("ViewModel", typeof(object), typeof(DisplayControl), new PropertyMetadata(OnViewModelChanged));
 
         internal static readonly DependencyProperty ContentProperty =
-            DependencyProperty.Register("Content", typeof(object), typeof(DisplayControl), new PropertyMetadata(null));
+            DependencyProperty.Register("Content", typeof(object), typeof(DisplayControl), new PropertyMetadata(OnContentChanged));
 
-        public static readonly DependencyProperty IsCachedProperty =
-            DependencyProperty.Register("IsCached", typeof(bool), typeof(DisplayControl), new PropertyMetadata(false));
+        public static readonly DependencyProperty DisposeViewModelProperty =
+            DependencyProperty.Register("DisposeViewModel", typeof(bool), typeof(DisplayControl), new PropertyMetadata(false));
 
-        public static readonly DependencyProperty DisposeViewModelsProperty =
-            DependencyProperty.Register("DisposeViewModels", typeof(bool), typeof(DisplayControl), new PropertyMetadata(false));
+        public static readonly DependencyProperty PleaseWaitDataTemplateProperty =
+            DependencyProperty.Register("PleaseWaitDataTemplate", typeof(DataTemplate), typeof(DisplayControl), new PropertyMetadata(null));
 
-        public static readonly DependencyProperty IDProperty =
-            DependencyProperty.Register("ID", typeof(object), typeof(DisplayControl), new PropertyMetadata(OnIDChanged));
+        internal static readonly DependencyProperty PleaseWaitProgressProperty =
+            DependencyProperty.Register("PleaseWaitProgress", typeof(LoadingProgress), typeof(DisplayControl), new PropertyMetadata(null));
 
         static DisplayControl()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(DisplayControl), new FrameworkPropertyMetadata(typeof(DisplayControl)));
         }
 
-        internal object ViewModel
+        public object ViewModel
         {
             get => GetValue(ViewModelProperty);
             set => SetValue(ViewModelProperty, value);
@@ -37,36 +41,56 @@ namespace SniffCore.Navigation
             set => SetValue(ContentProperty, value);
         }
 
-        public bool IsCached
+        public bool DisposeViewModel
         {
-            get => (bool) GetValue(IsCachedProperty);
-            set => SetValue(IsCachedProperty, value);
+            get => (bool) GetValue(DisposeViewModelProperty);
+            set => SetValue(DisposeViewModelProperty, value);
         }
 
-        // Dispose if not cached and replaced
-        public bool DisposeViewModels
+        public DataTemplate PleaseWaitDataTemplate
         {
-            get => (bool) GetValue(DisposeViewModelsProperty);
-            set => SetValue(DisposeViewModelsProperty, value);
+            get => (DataTemplate) GetValue(PleaseWaitDataTemplateProperty);
+            set => SetValue(PleaseWaitDataTemplateProperty, value);
         }
 
-        public object ID
+        internal LoadingProgress PleaseWaitProgress
         {
-            get => GetValue(IDProperty);
-            set => SetValue(IDProperty, value);
+            get => (LoadingProgress) GetValue(PleaseWaitProgressProperty);
+            set => SetValue(PleaseWaitProgressProperty, value);
         }
 
-        private static void OnIDChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnViewModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var control = (DisplayControl) d;
-            if (e.OldValue != null)
-                NavigationService.UnregisterDisplayControl(e.OldValue);
-
-            if (e.NewValue != null)
-                NavigationService.RegisterDisplayControl(e.NewValue, control);
+            if (e.NewValue is IAsyncLoader asyncLoader)
+                control.DisplayAndLoadAsync(asyncLoader).FireAndForget();
+            else if (e.NewValue is IDelayedAsyncLoader delayedAsyncLoader)
+                control.LoadAndDisplayAsync(delayedAsyncLoader).FireAndForget();
+            else
+                control.Content = e.NewValue;
         }
 
-        // Please Wait
-        // Switch Animation
+        private async Task DisplayAndLoadAsync(IAsyncLoader asyncLoader)
+        {
+            await asyncLoader.LoadAsync();
+            Content = asyncLoader;
+        }
+
+        private async Task LoadAndDisplayAsync(IDelayedAsyncLoader delayedAsyncLoader)
+        {
+            var progress = new LoadingProgress();
+            PleaseWaitProgress = progress;
+            Content = null;
+            await delayedAsyncLoader.LoadAsync(progress);
+            Content = delayedAsyncLoader;
+            PleaseWaitProgress = null;
+        }
+
+        private static void OnContentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var control = (DisplayControl) d;
+            if (control.DisposeViewModel && e.OldValue is IDisposable disposable)
+                disposable.Dispose();
+        }
     }
 }
