@@ -8,15 +8,18 @@ namespace SniffCore.Windows
 {
     public sealed class WindowProvider : IWindowProvider
     {
+        private static readonly DependencyProperty InstanceProperty =
+            DependencyProperty.RegisterAttached("Instance", typeof(Guid), typeof(WindowProvider), new PropertyMetadata(default(Guid)));
+
         private readonly Dictionary<object, Type> _controls;
-        private readonly Dictionary<object, Window> _openWindows;
+        private readonly Dictionary<Guid, Tuple<object, Window>> _openWindows;
         private readonly Dictionary<object, Type> _windows;
 
         public WindowProvider()
         {
             _windows = new Dictionary<object, Type>();
             _controls = new Dictionary<object, Type>();
-            _openWindows = new Dictionary<object, Window>();
+            _openWindows = new Dictionary<Guid, Tuple<object, Window>>();
         }
 
         public Window GetNewWindow(object windowKey)
@@ -28,7 +31,9 @@ namespace SniffCore.Windows
                 throw new InvalidOperationException($"For the windowKey '{windowKey}' no window is registered");
 
             var window = (Window) Activator.CreateInstance(windowType);
-            _openWindows[windowKey] = window;
+            var instance = Guid.NewGuid();
+            SetInstance(window, instance);
+            _openWindows[instance] = Tuple.Create(windowKey, window);
             window.Closed += HandleWindowClosed;
             return window;
         }
@@ -37,7 +42,12 @@ namespace SniffCore.Windows
         {
             if (windowKey == null)
                 throw new ArgumentNullException(nameof(windowKey));
-            return _openWindows[windowKey];
+
+            var first = _openWindows.FirstOrDefault(x => x.Value.Item1 == windowKey);
+            if (first.Value == null)
+                throw new InvalidOperationException($@"There is no open window with the window key '{windowKey}'");
+
+            return first.Value.Item2;
         }
 
         public UserControl GetNewControl(object controlKey)
@@ -55,8 +65,8 @@ namespace SniffCore.Windows
         {
             var window = (Window) sender;
             window.Closed -= HandleWindowClosed;
-            var knownPair = _openWindows.FirstOrDefault(p => Equals(p.Value, window));
-            _openWindows.Remove(knownPair.Key);
+            var instance = GetInstance(window);
+            _openWindows.Remove(instance);
         }
 
         public void RegisterWindow<TWindow>(object windowKey) where TWindow : Window
@@ -67,6 +77,16 @@ namespace SniffCore.Windows
         public void RegisterControl<TControl>(object controlKey) where TControl : UserControl
         {
             _controls[controlKey] = typeof(TControl);
+        }
+
+        private static Guid GetInstance(DependencyObject obj)
+        {
+            return (Guid) obj.GetValue(InstanceProperty);
+        }
+
+        private static void SetInstance(DependencyObject obj, Guid value)
+        {
+            obj.SetValue(InstanceProperty, value);
         }
     }
 }
