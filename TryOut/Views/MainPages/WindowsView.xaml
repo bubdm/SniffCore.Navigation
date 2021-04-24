@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="TryOut.Views.MainPages.WindowsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:MainPages="clr-namespace:TryOut.ViewModels.MainPages"
+             xmlns:Controls="clr-namespace:TryOut.Controls"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance MainPages:WindowsViewModel}"
+             d:DesignHeight="450"
+             d:DesignWidth="800">
+
+    <StackPanel Orientation="Horizontal" Margin="20" HorizontalAlignment="Left" VerticalAlignment="Top">
+        <Controls:BigButton Label="Modal Async" Command="{Binding ModalAsyncLoaderCommand}" Margin="0,0,10,0" />
+        <Controls:BigButton Label="Modal Delayed Async" Command="{Binding ModalDelayedAsyncLoaderCommand}"
+                            Margin="0,0,10,0" />
+        <Controls:BigButton Label="Modal Code Canceled" Command="{Binding ModalCodeCanceledFolderCommand}"
+                            Margin="0,0,10,0" />
+        <Controls:BigButton Label="Async" Command="{Binding AsyncLoaderCommand}" Margin="0,0,10,0" />
+        <Controls:BigButton Label="Delayed Async" Command="{Binding DelayedAsyncLoaderCommand}" Margin="0,0,10,0" />
+        <Controls:BigButton Label="Code Canceled" Command="{Binding CodeCanceledFolderCommand}" />
+    </StackPanel>
+
+</UserControl>

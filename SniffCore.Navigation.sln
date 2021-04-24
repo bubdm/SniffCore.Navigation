@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SniffCore.PleaseWaits", "Sn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SniffCore.Dialogs", "SniffCore.Dialogs\SniffCore.Dialogs.csproj", "{44CA7109-9E34-4077-AC8C-90D2CAAA918E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TryOut", "TryOut\TryOut.csproj", "{2E4BC2A6-35C0-452B-9CDC-93BC2CBFF09B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{44CA7109-9E34-4077-AC8C-90D2CAAA918E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44CA7109-9E34-4077-AC8C-90D2CAAA918E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44CA7109-9E34-4077-AC8C-90D2CAAA918E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E4BC2A6-35C0-452B-9CDC-93BC2CBFF09B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E4BC2A6-35C0-452B-9CDC-93BC2CBFF09B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E4BC2A6-35C0-452B-9CDC-93BC2CBFF09B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E4BC2A6-35C0-452B-9CDC-93BC2CBFF09B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,41 @@
+﻿<Window x:Class="TryOut.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ViewModels="clr-namespace:TryOut.ViewModels"
+        xmlns:Controls="clr-namespace:TryOut.Controls"
+        xmlns:Navigation="clr-namespace:SniffCore.Navigation;assembly=SniffCore.Navigation"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance ViewModels:MainViewModel}"
+        Title="MainView"
+        Height="450"
+        Width="800">
+
+    <DockPanel>
+        <Controls:NavigationBar DockPanel.Dock="Left" Width="150">
+            <Controls:NavigationBarItem Content="MessageBoxes" CommandParameter="MessageBoxesView"
+                                        Command="{Binding ShowControlCommand}" />
+            <Controls:NavigationBarItem Content="Dialogs" CommandParameter="DialogsView"
+                                        Command="{Binding ShowControlCommand}" />
+            <Controls:NavigationBarItem Content="Windows" CommandParameter="WindowsView"
+                                        Command="{Binding ShowControlCommand}" />
+            <!-- IAsyncLoader, IDelayedAsyncLoader, Cancel by code, cancel by user, Dispose -->
+            <Controls:NavigationBarItem Content="NavigationPresenter" CommandParameter="NavigationPresenterView"
+                                        Command="{Binding ShowControlCommand}" />
+            <!-- IAsyncLoader, IDelayedAsyncLoader, Dispose -->
+            <Controls:NavigationBarItem Content="DisplayControl" CommandParameter="DisplayControlView"
+                                        Command="{Binding ShowControlCommand}" />
+            <Controls:NavigationBarItem Content="Pending Changes" CommandParameter="PendingChangesView"
+                                        Command="{Binding ShowControlCommand}" />
+            <Controls:NavigationBarItem Content="Input Validations" CommandParameter="InputValidationsView"
+                                        Command="{Binding ShowControlCommand}" />
+            <Controls:NavigationBarItem Content="Locked" CommandParameter="LockedView"
+                                        Command="{Binding ShowControlCommand}" />
+        </Controls:NavigationBar>
+        <Controls:MainPage>
+            <Navigation:NavigationPresenter ID="MainSpot" />
+        </Controls:MainPage>
+    </DockPanel>
+
+</Window>
