@@ -14,4 +14,24 @@
     <ProjectReference Include="..\SniffCore.Navigation\SniffCore.Navigation.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Views\MainPages\DisplayControl\DisplayAsyncView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\MainPages\DisplayControl\DisplayDelayedAsyncView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\MainPages\DisplayControl\DisplayAsyncView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\MainPages\DisplayControl\DisplayDelayedAsyncView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
 </Project>

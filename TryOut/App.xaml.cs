@@ -7,6 +7,7 @@ using SniffCore.Windows;
 using TryOut.ViewModels;
 using TryOut.Views;
 using TryOut.Views.MainPages;
+using TryOut.Views.MainPages.NavigationPresenter;
 using TryOut.Views.MainPages.Windows;
 using Unity;
 
@@ -40,6 +41,8 @@ namespace TryOut
             windowProvider.RegisterControl<NavigationPresenterView>("NavigationPresenterView");
             windowProvider.RegisterControl<PendingChangesView>("PendingChangesView");
             windowProvider.RegisterControl<WindowsView>("WindowsView");
+            windowProvider.RegisterControl<NavigationAsyncView>("NavigationAsyncView");
+            windowProvider.RegisterControl<NavigationDelayedAsyncView>("NavigationDelayedAsyncView");
 
             base.OnStartup(e);
 

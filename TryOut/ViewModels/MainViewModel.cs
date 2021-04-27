@@ -6,7 +6,7 @@ using Unity;
 
 namespace TryOut.ViewModels
 {
-    public class MainViewModel
+    public class MainViewModel : ObservableObject
     {
         private readonly INavigationService _navigationService;
         private readonly IUnityContainer _unityContainer;

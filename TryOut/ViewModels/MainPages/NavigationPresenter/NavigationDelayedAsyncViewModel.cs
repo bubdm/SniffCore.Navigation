@@ -3,9 +3,9 @@ using SniffCore;
 using SniffCore.Navigation;
 using SniffCore.PleaseWaits;
 
-namespace TryOut.ViewModels.MainPages.Windows
+namespace TryOut.ViewModels.MainPages.NavigationPresenter
 {
-    public class DelayedAsyncSubViewModel : ObservableObject, IDelayedAsyncLoader
+    public class NavigationDelayedAsyncViewModel : ObservableObject, IDelayedAsyncLoader
     {
         public async Task LoadAsync(LoadingProgress progress)
         {

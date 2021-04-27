@@ -4,11 +4,34 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:MainPages="clr-namespace:TryOut.ViewModels.MainPages"
+             xmlns:Controls="clr-namespace:TryOut.Controls"
+             xmlns:Navigation="clr-namespace:SniffCore.Navigation;assembly=SniffCore.Navigation"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance MainPages:NavigationPresenterViewModel}"
              d:DesignHeight="450"
              d:DesignWidth="800">
 
-    <Grid />
+    <DockPanel>
+        <StackPanel Orientation="Horizontal" Margin="20" DockPanel.Dock="Top">
+            <Controls:BigButton Label="Async VM" Command="{Binding ShowAsyncViewModelCommand}" Margin="0,0,10,0" />
+            <Controls:BigButton Label="DelayedAsync VM" Command="{Binding ShowDelayedAsyncViewModelCommand}" />
+        </StackPanel>
+
+        <Navigation:NavigationPresenter ID="Spot" Margin="20,0,20,20">
+            <Navigation:NavigationPresenter.PleaseWaitDataTemplate>
+                <DataTemplate>
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock Text="Please Wait ..." HorizontalAlignment="Center" />
+                        <ProgressBar Margin="0,10,0,0"
+                                     Minimum="0"
+                                     Maximum="100"
+                                     Value="{Binding Progress, Mode=OneWay}"
+                                     Height="18"
+                                     Width="100" />
+                    </StackPanel>
+                </DataTemplate>
+            </Navigation:NavigationPresenter.PleaseWaitDataTemplate>
+        </Navigation:NavigationPresenter>
+    </DockPanel>
 
 </UserControl>
