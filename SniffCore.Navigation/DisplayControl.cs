@@ -72,8 +72,8 @@ namespace SniffCore.Navigation
 
         private async Task DisplayAndLoadAsync(IAsyncLoader asyncLoader)
         {
-            await asyncLoader.LoadAsync();
             Content = asyncLoader;
+            await asyncLoader.LoadAsync();
         }
 
         private async Task LoadAndDisplayAsync(IDelayedAsyncLoader delayedAsyncLoader)
