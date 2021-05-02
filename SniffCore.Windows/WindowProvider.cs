@@ -43,7 +43,7 @@ namespace SniffCore.Windows
             if (windowKey == null)
                 throw new ArgumentNullException(nameof(windowKey));
 
-            var first = _openWindows.FirstOrDefault(x => x.Value.Item1 == windowKey);
+            var first = _openWindows.FirstOrDefault(x => Equals(x.Value.Item1, windowKey));
             if (first.Value == null)
                 throw new InvalidOperationException($@"There is no open window with the window key '{windowKey}'");
 
