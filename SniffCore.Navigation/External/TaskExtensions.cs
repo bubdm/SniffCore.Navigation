@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 
 namespace SniffCore.Navigation.External
 {
-    public static class TaskExtensions
+    internal static class TaskExtensions
     {
-        public static async void FireAndForget(this Task task)
+        internal static async void FireAndForget(this Task task)
         {
             try
             {
