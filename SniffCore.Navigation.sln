@@ -13,7 +13,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SniffCore.PleaseWaits", "Sn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SniffCore.Dialogs", "SniffCore.Dialogs\SniffCore.Dialogs.csproj", "{44CA7109-9E34-4077-AC8C-90D2CAAA918E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TryOut", "TryOut\TryOut.csproj", "{2E4BC2A6-35C0-452B-9CDC-93BC2CBFF09B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TryOut", "TryOut\TryOut.csproj", "{2E4BC2A6-35C0-452B-9CDC-93BC2CBFF09B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{097C8DB0-416A-4A0D-A21F-8B6508FAC87F}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
