@@ -1,4 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿//
+// Copyright (c) David Wendland. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+//
+
+using System.Threading.Tasks;
 using System.Windows;
 using SniffCore.Dialogs;
 using SniffCore.MessageBoxes;
