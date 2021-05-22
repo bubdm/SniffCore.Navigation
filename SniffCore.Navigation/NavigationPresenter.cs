@@ -27,7 +27,7 @@ namespace SniffCore.Navigation
         internal static readonly DependencyProperty PleaseWaitProgressProperty =
             DependencyProperty.Register("PleaseWaitProgress", typeof(LoadingProgress), typeof(NavigationPresenter), new PropertyMetadata(OnPleaseWaitProgressChanged));
 
-        public static readonly DependencyProperty ProgressDataProperty =
+        internal static readonly DependencyProperty ProgressDataProperty =
             DependencyProperty.Register("ProgressData", typeof(ProgressData), typeof(NavigationPresenter), new PropertyMetadata(null));
 
         static NavigationPresenter()
@@ -65,7 +65,7 @@ namespace SniffCore.Navigation
             set => SetValue(PleaseWaitProgressProperty, value);
         }
 
-        public ProgressData ProgressData
+        internal ProgressData ProgressData
         {
             get => (ProgressData) GetValue(ProgressDataProperty);
             set => SetValue(ProgressDataProperty, value);

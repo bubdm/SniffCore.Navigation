@@ -48,11 +48,11 @@ namespace SniffCore.Windows
             if (windowKey == null)
                 throw new ArgumentNullException(nameof(windowKey));
 
-            var first = _openWindows.FirstOrDefault(x => Equals(x.Value.Item1, windowKey));
-            if (first.Value == null)
+            var (_, value) = _openWindows.FirstOrDefault(x => Equals(x.Value.Item1, windowKey));
+            if (value == null)
                 throw new InvalidOperationException($@"There is no open window with the window key '{windowKey}'");
 
-            return first.Value.Item2;
+            return value.Item2;
         }
 
         public UserControl GetNewControl(object controlKey)

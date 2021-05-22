@@ -7,8 +7,12 @@ using System.Windows;
 
 namespace SniffCore.MessageBoxes
 {
-    public sealed class MessageBoxOptions : IMessageBoxOptions
+    public class MessageBoxOptions : IMessageBoxOptions
     {
+        public MessageBoxOptions()
+        {
+        }
+
         public MessageBoxOptions(MessageBoxImage? icon)
             : this(icon, null)
         {

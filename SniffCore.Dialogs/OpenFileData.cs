@@ -9,6 +9,20 @@ namespace SniffCore.Dialogs
 {
     public class OpenFileData : IOpenFileData
     {
+        public OpenFileData()
+        {
+            CheckFileExists = true;
+            CheckPathExists = true;
+            DefaultExt = string.Empty;
+            FileName = string.Empty;
+            Filter = string.Empty;
+            FilterIndex = 1;
+            InitialDirectory = string.Empty;
+            MultiSelect = false;
+            Title = string.Empty;
+            ValidateNames = true;
+        }
+
         public bool CheckFileExists { get; set; }
         public bool CheckPathExists { get; set; }
         public string DefaultExt { get; set; }

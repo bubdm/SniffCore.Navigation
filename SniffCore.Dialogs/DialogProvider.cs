@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace SniffCore.Dialogs
 {
-    public class DialogProvider : IDialogProvider
+    public sealed class DialogProvider : IDialogProvider
     {
         public bool Show(IOpenFileData openFileData)
         {
@@ -24,16 +24,15 @@ namespace SniffCore.Dialogs
                 Title = openFileData.Title,
                 ValidateNames = openFileData.ValidateNames
             };
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-                openFileData.FileName = dialog.FileName;
-                openFileData.FileNames = dialog.FileNames;
-                openFileData.SafeFileName = dialog.SafeFileName;
-                openFileData.SafeFileNames = dialog.SafeFileNames;
-                return true;
-            }
 
-            return false;
+            if (dialog.ShowDialog() != DialogResult.OK)
+                return false;
+
+            openFileData.FileName = dialog.FileName;
+            openFileData.FileNames = dialog.FileNames;
+            openFileData.SafeFileName = dialog.SafeFileName;
+            openFileData.SafeFileNames = dialog.SafeFileNames;
+            return true;
         }
 
         public bool Show(ISaveFileData saveFileData)
@@ -52,14 +51,13 @@ namespace SniffCore.Dialogs
                 Title = saveFileData.Title,
                 ValidateNames = saveFileData.ValidateNames
             };
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-                saveFileData.FileName = dialog.FileName;
-                saveFileData.FileNames = dialog.FileNames;
-                return true;
-            }
 
-            return false;
+            if (dialog.ShowDialog() != DialogResult.OK)
+                return false;
+
+            saveFileData.FileName = dialog.FileName;
+            saveFileData.FileNames = dialog.FileNames;
+            return true;
         }
 
         public bool Show(IBrowseFolderData browseFolderData)
@@ -72,14 +70,14 @@ namespace SniffCore.Dialogs
                 dialog.RootFolder = browseFolderData.RootFolder.Value;
             if (!string.IsNullOrWhiteSpace(browseFolderData.Description))
                 dialog.Description = browseFolderData.Description;
+            if (!string.IsNullOrWhiteSpace(browseFolderData.SelectedPath))
+                dialog.SelectedPath = browseFolderData.Description;
 
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-                browseFolderData.SelectedPath = dialog.SelectedPath;
-                return true;
-            }
+            if (dialog.ShowDialog() != DialogResult.OK)
+                return false;
 
-            return false;
+            browseFolderData.SelectedPath = dialog.SelectedPath;
+            return true;
         }
     }
 }

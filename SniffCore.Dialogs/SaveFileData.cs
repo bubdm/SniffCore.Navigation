@@ -9,6 +9,21 @@ namespace SniffCore.Dialogs
 {
     public class SaveFileData : ISaveFileData
     {
+        public SaveFileData()
+        {
+            CheckFileExists = false;
+            CheckPathExists = true;
+            CreatePrompt = false;
+            DefaultExt = string.Empty;
+            FileName = string.Empty;
+            Filter = string.Empty;
+            FilterIndex = 1;
+            InitialDirectory = string.Empty;
+            OverwritePrompt = true;
+            Title = string.Empty;
+            ValidateNames = true;
+        }
+
         public bool CheckFileExists { get; set; }
         public bool CheckPathExists { get; set; }
         public bool CreatePrompt { get; set; }

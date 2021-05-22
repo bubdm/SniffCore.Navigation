@@ -5,7 +5,7 @@
 
 namespace SniffCore.PleaseWaits
 {
-    public class InvisiblePleaseWaitProvider : IPleaseWaitProvider
+    public sealed class InvisiblePleaseWaitProvider : IPleaseWaitProvider
     {
         public void Show()
         {

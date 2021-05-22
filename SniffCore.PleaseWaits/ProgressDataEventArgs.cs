@@ -9,7 +9,7 @@ namespace SniffCore.PleaseWaits
 {
     public sealed class ProgressDataEventArgs : EventArgs
     {
-        public ProgressDataEventArgs(ProgressData data)
+        internal ProgressDataEventArgs(ProgressData data)
         {
             Data = data;
         }

@@ -9,6 +9,15 @@ namespace SniffCore.Dialogs
 {
     public class BrowseFolderData : IBrowseFolderData
     {
+        public BrowseFolderData()
+        {
+            Description = string.Empty;
+            RootFolder = Environment.SpecialFolder.Desktop;
+            SelectedPath = string.Empty;
+            ShowNewFolderButton = true;
+            Data = null;
+        }
+
         public string Description { get; set; }
         public Environment.SpecialFolder? RootFolder { get; set; }
         public string SelectedPath { get; set; }
