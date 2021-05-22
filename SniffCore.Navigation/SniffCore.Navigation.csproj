@@ -6,6 +6,10 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netcoreapp3.1\SniffCore.Navigation.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\SniffCore.Dialogs\SniffCore.Dialogs.csproj" />
     <ProjectReference Include="..\SniffCore.MessageBoxes\SniffCore.MessageBoxes.csproj" />
