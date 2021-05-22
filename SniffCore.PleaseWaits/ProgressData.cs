@@ -3,8 +3,14 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+
 namespace SniffCore.PleaseWaits
 {
+    /// <summary>
+    ///     Holds the loading progress data.
+    /// </summary>
     public sealed class ProgressData
     {
         internal ProgressData(double progress)
@@ -34,8 +40,19 @@ namespace SniffCore.PleaseWaits
             Progress = progress;
         }
 
+        /// <summary>
+        ///     The loading progress message.
+        /// </summary>
         public string Message { get; }
+
+        /// <summary>
+        ///     The loading progress data.
+        /// </summary>
         public object MessageData { get; }
+
+        /// <summary>
+        ///     The loading progress value.
+        /// </summary>
         public double Progress { get; }
     }
 }

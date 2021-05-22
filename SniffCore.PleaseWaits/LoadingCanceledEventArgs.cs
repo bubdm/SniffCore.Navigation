@@ -7,6 +7,9 @@ using System;
 
 namespace SniffCore.PleaseWaits
 {
+    /// <summary>
+    ///     Holds the loading data.
+    /// </summary>
     public sealed class LoadingCanceledEventArgs : EventArgs
     {
         internal LoadingCanceledEventArgs(LoadingCanceled data)
@@ -14,6 +17,9 @@ namespace SniffCore.PleaseWaits
             Data = data;
         }
 
+        /// <summary>
+        ///     The loading data.
+        /// </summary>
         public LoadingCanceled Data { get; }
     }
 }

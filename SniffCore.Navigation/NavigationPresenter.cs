@@ -8,19 +8,33 @@ using System.Windows;
 using System.Windows.Controls;
 using SniffCore.PleaseWaits;
 
+// ReSharper disable MemberCanBePrivate.Global
+
 namespace SniffCore.Navigation
 {
+    /// <summary>
+    ///     Represents a host where a user control will be placed by the <see cref="INavigationService" />.
+    /// </summary>
     public class NavigationPresenter : Control
     {
+        /// <summary>
+        ///     The DependencyProperty for the ID property.
+        /// </summary>
         public static readonly DependencyProperty IDProperty =
             DependencyProperty.Register("ID", typeof(object), typeof(NavigationPresenter), new PropertyMetadata(OnIDChanged));
 
         internal static readonly DependencyProperty ContentProperty =
             DependencyProperty.Register("Content", typeof(object), typeof(NavigationPresenter), new PropertyMetadata(OnContentChanged));
 
+        /// <summary>
+        ///     The DependencyProperty for the DisposeViewModel property.
+        /// </summary>
         public static readonly DependencyProperty DisposeViewModelProperty =
             DependencyProperty.Register("DisposeViewModel", typeof(bool), typeof(NavigationPresenter), new PropertyMetadata(false));
 
+        /// <summary>
+        ///     The DependencyProperty for the PleaseWaitDataTemplate property.
+        /// </summary>
         public static readonly DependencyProperty PleaseWaitDataTemplateProperty =
             DependencyProperty.Register("PleaseWaitDataTemplate", typeof(DataTemplate), typeof(NavigationPresenter), new PropertyMetadata(null));
 
@@ -35,6 +49,9 @@ namespace SniffCore.Navigation
             DefaultStyleKeyProperty.OverrideMetadata(typeof(NavigationPresenter), new FrameworkPropertyMetadata(typeof(NavigationPresenter)));
         }
 
+        /// <summary>
+        ///     Defines if the viewmodel shall be disposed if they implement the IDisposable and the ViewModel changed.
+        /// </summary>
         public bool DisposeViewModel
         {
             get => (bool) GetValue(DisposeViewModelProperty);
@@ -47,12 +64,18 @@ namespace SniffCore.Navigation
             set => SetValue(ContentProperty, value);
         }
 
+        /// <summary>
+        ///     The ID of the <see cref="NavigationPresenter" /> how it registers in the <see cref="NavigationPresenter" />.
+        /// </summary>
         public object ID
         {
             get => GetValue(IDProperty);
             set => SetValue(IDProperty, value);
         }
 
+        /// <summary>
+        ///     Defines the please wait data template which gets the <see cref="ProgressData" /> as a DataContext.
+        /// </summary>
         public DataTemplate PleaseWaitDataTemplate
         {
             get => (DataTemplate) GetValue(PleaseWaitDataTemplateProperty);

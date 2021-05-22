@@ -9,8 +9,13 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
+// ReSharper disable PossibleNullReferenceException
+
 namespace SniffCore.Windows
 {
+    /// <summary>
+    ///     Provides possibilities to create and display windows and user controls.
+    /// </summary>
     public sealed class WindowProvider : IWindowProvider
     {
         private static readonly DependencyProperty InstanceProperty =
@@ -20,6 +25,9 @@ namespace SniffCore.Windows
         private readonly Dictionary<Guid, Tuple<object, Window>> _openWindows;
         private readonly Dictionary<object, Type> _windows;
 
+        /// <summary>
+        ///     Creates a new instance of <see cref="WindowProvider" />.
+        /// </summary>
         public WindowProvider()
         {
             _windows = new Dictionary<object, Type>();
@@ -27,6 +35,11 @@ namespace SniffCore.Windows
             _openWindows = new Dictionary<Guid, Tuple<object, Window>>();
         }
 
+        /// <summary>
+        ///     Creates a new window by the key.
+        /// </summary>
+        /// <param name="windowKey">The key of the window to create.</param>
+        /// <returns>The newly created window.</returns>
         public Window GetNewWindow(object windowKey)
         {
             if (windowKey == null)
@@ -43,6 +56,11 @@ namespace SniffCore.Windows
             return window;
         }
 
+        /// <summary>
+        ///     Returns the open window by the key.
+        /// </summary>
+        /// <param name="windowKey">The key of the window to return.</param>
+        /// <returns>The open window know by the key.</returns>
         public Window GetOpenWindow(object windowKey)
         {
             if (windowKey == null)
@@ -55,6 +73,11 @@ namespace SniffCore.Windows
             return value.Item2;
         }
 
+        /// <summary>
+        ///     Creates a new user control by the key.
+        /// </summary>
+        /// <param name="controlKey">The key of the user control to create.</param>
+        /// <returns>The newly created user control.</returns>
         public UserControl GetNewControl(object controlKey)
         {
             if (controlKey == null)
@@ -74,11 +97,21 @@ namespace SniffCore.Windows
             _openWindows.Remove(instance);
         }
 
+        /// <summary>
+        ///     Registers a window type for a window key.
+        /// </summary>
+        /// <typeparam name="TWindow">The type of the window to register.</typeparam>
+        /// <param name="windowKey">The window key.</param>
         public void RegisterWindow<TWindow>(object windowKey) where TWindow : Window
         {
             _windows[windowKey] = typeof(TWindow);
         }
 
+        /// <summary>
+        ///     Registers a user control type of a key.
+        /// </summary>
+        /// <typeparam name="TControl">The type of the user control to register.</typeparam>
+        /// <param name="controlKey">The user control key.</param>
         public void RegisterControl<TControl>(object controlKey) where TControl : UserControl
         {
             _controls[controlKey] = typeof(TControl);

@@ -5,10 +5,20 @@
 
 using System.Windows.Forms;
 
+// ReSharper disable ClassNeverInstantiated.Global
+
 namespace SniffCore.Dialogs
 {
+    /// <summary>
+    ///     Provides way how to show system dialogs for files and folders.
+    /// </summary>
     public sealed class DialogProvider : IDialogProvider
     {
+        /// <summary>
+        ///     Shows the open file dialog.
+        /// </summary>
+        /// <param name="openFileData">The open file dialog data.</param>
+        /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
         public bool Show(IOpenFileData openFileData)
         {
             var dialog = new OpenFileDialog
@@ -35,6 +45,11 @@ namespace SniffCore.Dialogs
             return true;
         }
 
+        /// <summary>
+        ///     Shows the save file dialog.
+        /// </summary>
+        /// <param name="saveFileData">The save file dialog data.</param>
+        /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
         public bool Show(ISaveFileData saveFileData)
         {
             var dialog = new SaveFileDialog
@@ -60,6 +75,11 @@ namespace SniffCore.Dialogs
             return true;
         }
 
+        /// <summary>
+        ///     Shows the browse folder dialog.
+        /// </summary>
+        /// <param name="browseFolderData">The browse folder dialog data.</param>
+        /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
         public bool Show(IBrowseFolderData browseFolderData)
         {
             var dialog = new FolderBrowserDialog

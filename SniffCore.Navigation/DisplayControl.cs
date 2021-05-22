@@ -10,19 +10,30 @@ using System.Windows.Controls;
 using SniffCore.Navigation.External;
 using SniffCore.PleaseWaits;
 
+// ReSharper disable MemberCanBePrivate.Global
+
 namespace SniffCore.Navigation
 {
     public class DisplayControl : Control
     {
+        /// <summary>
+        ///     The DependencyProperty for the ViewModel property.
+        /// </summary>
         public static readonly DependencyProperty ViewModelProperty =
             DependencyProperty.Register("ViewModel", typeof(object), typeof(DisplayControl), new PropertyMetadata(OnViewModelChanged));
 
         internal static readonly DependencyProperty ContentProperty =
             DependencyProperty.Register("Content", typeof(object), typeof(DisplayControl), new PropertyMetadata(OnContentChanged));
 
+        /// <summary>
+        ///     The DependencyProperty for the DisposeViewModel property.
+        /// </summary>
         public static readonly DependencyProperty DisposeViewModelProperty =
             DependencyProperty.Register("DisposeViewModel", typeof(bool), typeof(DisplayControl), new PropertyMetadata(false));
 
+        /// <summary>
+        ///     The DependencyProperty for the PleaseWaitDataTemplate property.
+        /// </summary>
         public static readonly DependencyProperty PleaseWaitDataTemplateProperty =
             DependencyProperty.Register("PleaseWaitDataTemplate", typeof(DataTemplate), typeof(DisplayControl), new PropertyMetadata(null));
 
@@ -34,6 +45,9 @@ namespace SniffCore.Navigation
             DefaultStyleKeyProperty.OverrideMetadata(typeof(DisplayControl), new FrameworkPropertyMetadata(typeof(DisplayControl)));
         }
 
+        /// <summary>
+        ///     The ViewModel to display which view will be determined by the resources.
+        /// </summary>
         public object ViewModel
         {
             get => GetValue(ViewModelProperty);
@@ -46,12 +60,18 @@ namespace SniffCore.Navigation
             set => SetValue(ContentProperty, value);
         }
 
+        /// <summary>
+        ///     Defines if the viewmodel shall be disposed if they implement the IDisposable and the ViewModel changed.
+        /// </summary>
         public bool DisposeViewModel
         {
             get => (bool) GetValue(DisposeViewModelProperty);
             set => SetValue(DisposeViewModelProperty, value);
         }
 
+        /// <summary>
+        ///     Defines the please wait data template which gets the <see cref="ProgressData" /> as a DataContext.
+        /// </summary>
         public DataTemplate PleaseWaitDataTemplate
         {
             get => (DataTemplate) GetValue(PleaseWaitDataTemplateProperty);

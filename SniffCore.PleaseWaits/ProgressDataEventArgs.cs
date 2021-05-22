@@ -7,6 +7,9 @@ using System;
 
 namespace SniffCore.PleaseWaits
 {
+    /// <summary>
+    ///     Holds the progress data.
+    /// </summary>
     public sealed class ProgressDataEventArgs : EventArgs
     {
         internal ProgressDataEventArgs(ProgressData data)
@@ -14,6 +17,9 @@ namespace SniffCore.PleaseWaits
             Data = data;
         }
 
+        /// <summary>
+        ///     The progress data.
+        /// </summary>
         public ProgressData Data { get; }
     }
 }

@@ -7,9 +7,19 @@ using System.Windows;
 
 namespace SniffCore.MessageBoxes
 {
+    /// <summary>
+    ///     Provides additional data for the message box.
+    /// </summary>
     public interface IMessageBoxOptions
     {
+        /// <summary>
+        ///     [Optional] The icon to show in the message box.
+        /// </summary>
         MessageBoxImage? Icon { get; set; }
+
+        /// <summary>
+        ///     [Optional] The default result of the message box.
+        /// </summary>
         MessageBoxResult? DefaultResult { get; set; }
     }
 }
