@@ -14,6 +14,10 @@ using SniffCore.PleaseWaits;
 
 namespace SniffCore.Navigation
 {
+    /// <summary>
+    ///     Provides a way to display a ViewModel where the View is found by the Resources but allow loading of IAsyncLoader
+    ///     and Please Wait and more.
+    /// </summary>
     public class DisplayControl : Control
     {
         /// <summary>
