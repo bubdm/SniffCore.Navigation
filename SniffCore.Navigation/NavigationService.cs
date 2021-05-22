@@ -71,40 +71,46 @@ namespace SniffCore.Navigation
         public async Task ShowWindowAsync(object ownerWindowKey, object windowKey, object viewModel)
         {
             var window = CreateWindow(ownerWindowKey, windowKey, viewModel);
-            if (viewModel is IAsyncLoader asyncLoader)
+            switch (viewModel)
             {
-                window.Show();
-                await asyncLoader.LoadAsync();
-            }
-            else if (viewModel is IDelayedAsyncLoader delayedAsyncLoader)
-            {
-                var loadingProgress = new LoadingProgress();
-                var isCanceled = false;
-
-                void LoadingProgressOnProgressUpdated(object sender, ProgressDataEventArgs e)
+                case IAsyncLoader asyncLoader:
                 {
-                    _pleaseWaitProvider.HandleProgress(e.Data);
-                }
-
-                void LoadingProgressOnProgressCanceled(object sender, LoadingCanceledEventArgs e)
-                {
-                    isCanceled = true;
-                    _pleaseWaitProvider.HandleCanceled(e.Data);
-                }
-
-                loadingProgress.ProgressUpdated += LoadingProgressOnProgressUpdated;
-                loadingProgress.ProgressCanceled += LoadingProgressOnProgressCanceled;
-                _pleaseWaitProvider.Show();
-                await delayedAsyncLoader.LoadAsync(loadingProgress);
-                loadingProgress.ProgressUpdated -= LoadingProgressOnProgressUpdated;
-                loadingProgress.ProgressCanceled -= LoadingProgressOnProgressCanceled;
-                _pleaseWaitProvider.Close();
-                if (!isCanceled)
                     window.Show();
-            }
-            else
-            {
-                window.Show();
+                    await asyncLoader.LoadAsync();
+                    break;
+                }
+                case IDelayedAsyncLoader delayedAsyncLoader:
+                {
+                    var loadingProgress = new LoadingProgress();
+                    var isCanceled = false;
+
+                    void LoadingProgressOnProgressUpdated(object sender, ProgressDataEventArgs e)
+                    {
+                        _pleaseWaitProvider.HandleProgress(e.Data);
+                    }
+
+                    void LoadingProgressOnProgressCanceled(object sender, LoadingCanceledEventArgs e)
+                    {
+                        isCanceled = true;
+                        _pleaseWaitProvider.HandleCanceled(e.Data);
+                    }
+
+                    loadingProgress.ProgressUpdated += LoadingProgressOnProgressUpdated;
+                    loadingProgress.ProgressCanceled += LoadingProgressOnProgressCanceled;
+                    _pleaseWaitProvider.Show();
+                    await delayedAsyncLoader.LoadAsync(loadingProgress);
+                    loadingProgress.ProgressUpdated -= LoadingProgressOnProgressUpdated;
+                    loadingProgress.ProgressCanceled -= LoadingProgressOnProgressCanceled;
+                    _pleaseWaitProvider.Close();
+                    if (!isCanceled)
+                        window.Show();
+                    break;
+                }
+                default:
+                {
+                    window.Show();
+                    break;
+                }
             }
         }
 
@@ -129,39 +135,43 @@ namespace SniffCore.Navigation
         public async Task<bool?> ShowModalWindowAsync(object ownerWindowKey, object windowKey, object viewModel)
         {
             var window = CreateWindow(ownerWindowKey, windowKey, viewModel);
-            if (viewModel is IAsyncLoader asyncLoader)
+            switch (viewModel)
             {
-                asyncLoader.LoadAsync().FireAndForget();
-                return window.ShowDialog();
-            }
-
-            if (viewModel is IDelayedAsyncLoader delayedAsyncLoader)
-            {
-                var loadingProgress = new LoadingProgress();
-                var isCanceled = false;
-
-                void LoadingProgressOnProgressUpdated(object sender, ProgressDataEventArgs e)
+                case IAsyncLoader asyncLoader:
                 {
-                    _pleaseWaitProvider.HandleProgress(e.Data);
+                    asyncLoader.LoadAsync().FireAndForget();
+                    return window.ShowDialog();
                 }
-
-                void LoadingProgressOnProgressCanceled(object sender, LoadingCanceledEventArgs e)
+                case IDelayedAsyncLoader delayedAsyncLoader:
                 {
-                    isCanceled = true;
-                    _pleaseWaitProvider.HandleCanceled(e.Data);
+                    var loadingProgress = new LoadingProgress();
+                    var isCanceled = false;
+
+                    void LoadingProgressOnProgressUpdated(object sender, ProgressDataEventArgs e)
+                    {
+                        _pleaseWaitProvider.HandleProgress(e.Data);
+                    }
+
+                    void LoadingProgressOnProgressCanceled(object sender, LoadingCanceledEventArgs e)
+                    {
+                        isCanceled = true;
+                        _pleaseWaitProvider.HandleCanceled(e.Data);
+                    }
+
+                    loadingProgress.ProgressUpdated += LoadingProgressOnProgressUpdated;
+                    loadingProgress.ProgressCanceled += LoadingProgressOnProgressCanceled;
+                    _pleaseWaitProvider.Show();
+                    await delayedAsyncLoader.LoadAsync(loadingProgress);
+                    loadingProgress.ProgressUpdated -= LoadingProgressOnProgressUpdated;
+                    loadingProgress.ProgressCanceled -= LoadingProgressOnProgressCanceled;
+                    _pleaseWaitProvider.Close();
+                    return isCanceled ? null : window.ShowDialog();
                 }
-
-                loadingProgress.ProgressUpdated += LoadingProgressOnProgressUpdated;
-                loadingProgress.ProgressCanceled += LoadingProgressOnProgressCanceled;
-                _pleaseWaitProvider.Show();
-                await delayedAsyncLoader.LoadAsync(loadingProgress);
-                loadingProgress.ProgressUpdated -= LoadingProgressOnProgressUpdated;
-                loadingProgress.ProgressCanceled -= LoadingProgressOnProgressCanceled;
-                _pleaseWaitProvider.Close();
-                return isCanceled ? null : window.ShowDialog();
+                default:
+                {
+                    return window.ShowDialog();
+                }
             }
-
-            return window.ShowDialog();
         }
 
         /// <summary>
@@ -207,23 +217,29 @@ namespace SniffCore.Navigation
             var control = _windowProvider.GetNewControl(controlKey);
             control.DataContext = viewModel;
             var host = (NavigationPresenter) reference.Target;
-            if (viewModel is IAsyncLoader asyncLoader)
+            switch (viewModel)
             {
-                host.Content = control;
-                await asyncLoader.LoadAsync();
-            }
-            else if (viewModel is IDelayedAsyncLoader delayedAsyncLoader)
-            {
-                var loadingProgress = new LoadingProgress();
-                host.Content = null;
-                host.PleaseWaitProgress = loadingProgress;
-                await delayedAsyncLoader.LoadAsync(loadingProgress);
-                host.PleaseWaitProgress = null;
-                host.Content = control;
-            }
-            else
-            {
-                host.Content = control;
+                case IAsyncLoader asyncLoader:
+                {
+                    host.Content = control;
+                    await asyncLoader.LoadAsync();
+                    break;
+                }
+                case IDelayedAsyncLoader delayedAsyncLoader:
+                {
+                    var loadingProgress = new LoadingProgress();
+                    host.Content = null;
+                    host.PleaseWaitProgress = loadingProgress;
+                    await delayedAsyncLoader.LoadAsync(loadingProgress);
+                    host.PleaseWaitProgress = null;
+                    host.Content = control;
+                    break;
+                }
+                default:
+                {
+                    host.Content = control;
+                    break;
+                }
             }
         }
 
@@ -363,7 +379,7 @@ namespace SniffCore.Navigation
             return window;
         }
 
-        private void HandleWindowClosing(object sender, CancelEventArgs e)
+        private static void HandleWindowClosing(object sender, CancelEventArgs e)
         {
             var window = (Window) sender;
             window.Closing -= HandleWindowClosing;
