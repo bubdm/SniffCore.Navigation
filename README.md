@@ -44,8 +44,8 @@ navigationService.ShowWindowAsync("MainView", vm);
 ```
 
 ## How To
-* [GitHub Wiki](https://github.com/devicenator/SniffCore.Navigation/wiki)
-* [Website](http://my-libraries.com/wiki/SniffCore.Navigation)
+* [Documentation](http://wiki.sniffcore.com)
+* [Website](http://sniffcore.com)
 
 ## License
 
