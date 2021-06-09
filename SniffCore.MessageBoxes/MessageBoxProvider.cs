@@ -3,6 +3,7 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 
+using System;
 using System.Windows;
 
 // ReSharper disable ConvertIfStatementToReturnStatement
@@ -20,8 +21,12 @@ namespace SniffCore.MessageBoxes
         /// </summary>
         /// <param name="messageBoxText">The text show in the message box.</param>
         /// <returns>The result of the message box after closing.</returns>
+        /// <exception cref="ArgumentNullException">messageBoxText is null.</exception>
         public MessageBoxResult Show(string messageBoxText)
         {
+            if (messageBoxText == null)
+                throw new ArgumentNullException(nameof(messageBoxText));
+
             return MessageBox.Show(messageBoxText);
         }
 
@@ -31,8 +36,15 @@ namespace SniffCore.MessageBoxes
         /// <param name="owner">The owner window of the message box.</param>
         /// <param name="messageBoxText">The text show in the message box.</param>
         /// <returns>The result of the message box after closing.</returns>
+        /// <exception cref="ArgumentNullException">owner is null.</exception>
+        /// <exception cref="ArgumentNullException">messageBoxText is null.</exception>
         public MessageBoxResult Show(Window owner, string messageBoxText)
         {
+            if (owner == null)
+                throw new ArgumentNullException(nameof(owner));
+            if (messageBoxText == null)
+                throw new ArgumentNullException(nameof(messageBoxText));
+
             return MessageBox.Show(owner, messageBoxText);
         }
 
@@ -42,8 +54,15 @@ namespace SniffCore.MessageBoxes
         /// <param name="messageBoxText">The text show in the message box.</param>
         /// <param name="caption">The message box caption.</param>
         /// <returns>The result of the message box after closing.</returns>
+        /// <exception cref="ArgumentNullException">messageBoxText is null.</exception>
+        /// <exception cref="ArgumentNullException">caption is null.</exception>
         public MessageBoxResult Show(string messageBoxText, string caption)
         {
+            if (messageBoxText == null)
+                throw new ArgumentNullException(nameof(messageBoxText));
+            if (caption == null)
+                throw new ArgumentNullException(nameof(caption));
+
             return MessageBox.Show(messageBoxText, caption);
         }
 
@@ -54,8 +73,18 @@ namespace SniffCore.MessageBoxes
         /// <param name="messageBoxText">The text show in the message box.</param>
         /// <param name="caption">The message box caption.</param>
         /// <returns>The result of the message box after closing.</returns>
+        /// <exception cref="ArgumentNullException">owner is null.</exception>
+        /// <exception cref="ArgumentNullException">messageBoxText is null.</exception>
+        /// <exception cref="ArgumentNullException">caption is null.</exception>
         public MessageBoxResult Show(Window owner, string messageBoxText, string caption)
         {
+            if (owner == null)
+                throw new ArgumentNullException(nameof(owner));
+            if (messageBoxText == null)
+                throw new ArgumentNullException(nameof(messageBoxText));
+            if (caption == null)
+                throw new ArgumentNullException(nameof(caption));
+
             return MessageBox.Show(owner, messageBoxText, caption);
         }
 
@@ -66,8 +95,15 @@ namespace SniffCore.MessageBoxes
         /// <param name="caption">The message box caption.</param>
         /// <param name="button">The buttons show in the message box.</param>
         /// <returns>The result of the message box after closing.</returns>
+        /// <exception cref="ArgumentNullException">messageBoxText is null.</exception>
+        /// <exception cref="ArgumentNullException">caption is null.</exception>
         public MessageBoxResult Show(string messageBoxText, string caption, MessageBoxButton button)
         {
+            if (messageBoxText == null)
+                throw new ArgumentNullException(nameof(messageBoxText));
+            if (caption == null)
+                throw new ArgumentNullException(nameof(caption));
+
             return MessageBox.Show(messageBoxText, caption, button);
         }
 
@@ -79,8 +115,18 @@ namespace SniffCore.MessageBoxes
         /// <param name="caption">The message box caption.</param>
         /// <param name="button">The buttons show in the message box.</param>
         /// <returns>The result of the message box after closing.</returns>
+        /// <exception cref="ArgumentNullException">owner is null.</exception>
+        /// <exception cref="ArgumentNullException">messageBoxText is null.</exception>
+        /// <exception cref="ArgumentNullException">caption is null.</exception>
         public MessageBoxResult Show(Window owner, string messageBoxText, string caption, MessageBoxButton button)
         {
+            if (owner == null)
+                throw new ArgumentNullException(nameof(owner));
+            if (messageBoxText == null)
+                throw new ArgumentNullException(nameof(messageBoxText));
+            if (caption == null)
+                throw new ArgumentNullException(nameof(caption));
+
             return MessageBox.Show(owner, messageBoxText, caption, button);
         }
 
@@ -92,8 +138,18 @@ namespace SniffCore.MessageBoxes
         /// <param name="button">The buttons show in the message box.</param>
         /// <param name="options">The additional options for the message box.</param>
         /// <returns>The result of the message box after closing.</returns>
+        /// <exception cref="ArgumentNullException">messageBoxText is null.</exception>
+        /// <exception cref="ArgumentNullException">caption is null.</exception>
+        /// <exception cref="ArgumentNullException">options is null.</exception>
         public MessageBoxResult Show(string messageBoxText, string caption, MessageBoxButton button, IMessageBoxOptions options)
         {
+            if (messageBoxText == null)
+                throw new ArgumentNullException(nameof(messageBoxText));
+            if (caption == null)
+                throw new ArgumentNullException(nameof(caption));
+            if (options == null)
+                throw new ArgumentNullException(nameof(options));
+
             if (options.Icon != null && options.DefaultResult != null)
                 return MessageBox.Show(messageBoxText, caption, button, options.Icon.Value, options.DefaultResult.Value);
             if (options.Icon != null)
@@ -112,8 +168,21 @@ namespace SniffCore.MessageBoxes
         /// <param name="button">The buttons show in the message box.</param>
         /// <param name="options">The additional options for the message box.</param>
         /// <returns>The result of the message box after closing.</returns>
+        /// <exception cref="ArgumentNullException">owner is null.</exception>
+        /// <exception cref="ArgumentNullException">messageBoxText is null.</exception>
+        /// <exception cref="ArgumentNullException">caption is null.</exception>
+        /// <exception cref="ArgumentNullException">options is null.</exception>
         public MessageBoxResult Show(Window owner, string messageBoxText, string caption, MessageBoxButton button, IMessageBoxOptions options)
         {
+            if (owner == null)
+                throw new ArgumentNullException(nameof(owner));
+            if (messageBoxText == null)
+                throw new ArgumentNullException(nameof(messageBoxText));
+            if (caption == null)
+                throw new ArgumentNullException(nameof(caption));
+            if (options == null)
+                throw new ArgumentNullException(nameof(options));
+
             if (options.Icon != null && options.DefaultResult != null)
                 return MessageBox.Show(owner, messageBoxText, caption, button, options.Icon.Value, options.DefaultResult.Value);
             if (options.Icon != null)

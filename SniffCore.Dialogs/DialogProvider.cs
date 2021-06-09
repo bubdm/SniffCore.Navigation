@@ -3,6 +3,7 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 
+using System;
 using System.Windows.Forms;
 
 // ReSharper disable ClassNeverInstantiated.Global
@@ -19,8 +20,12 @@ namespace SniffCore.Dialogs
         /// </summary>
         /// <param name="openFileData">The open file dialog data.</param>
         /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
+        /// <exception cref="ArgumentNullException">openFileData is null.</exception>
         public bool Show(IOpenFileData openFileData)
         {
+            if (openFileData == null)
+                throw new ArgumentNullException(nameof(openFileData));
+
             var dialog = new OpenFileDialog
             {
                 CheckFileExists = openFileData.CheckFileExists,
@@ -50,8 +55,12 @@ namespace SniffCore.Dialogs
         /// </summary>
         /// <param name="saveFileData">The save file dialog data.</param>
         /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
+        /// <exception cref="ArgumentNullException">saveFileData is null.</exception>
         public bool Show(ISaveFileData saveFileData)
         {
+            if (saveFileData == null)
+                throw new ArgumentNullException(nameof(saveFileData));
+
             var dialog = new SaveFileDialog
             {
                 CheckFileExists = saveFileData.CheckFileExists,
@@ -80,8 +89,12 @@ namespace SniffCore.Dialogs
         /// </summary>
         /// <param name="browseFolderData">The browse folder dialog data.</param>
         /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
+        /// <exception cref="ArgumentNullException">browseFolderData is null.</exception>
         public bool Show(IBrowseFolderData browseFolderData)
         {
+            if (browseFolderData == null)
+                throw new ArgumentNullException(nameof(browseFolderData));
+
             var dialog = new FolderBrowserDialog
             {
                 ShowNewFolderButton = browseFolderData.ShowNewFolderButton

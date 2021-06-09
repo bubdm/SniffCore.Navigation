@@ -39,15 +39,19 @@ namespace SniffCore.Navigation
         /// <param name="messageBoxProvider">The provider to display message boxes.</param>
         /// <param name="pleaseWaitProvider">The provider to display and update a global please wait.</param>
         /// <param name="dialogProvider">The provider to display system dialogs.</param>
+        /// <exception cref="ArgumentNullException">windowProvider is null.</exception>
+        /// <exception cref="ArgumentNullException">messageBoxProvider is null.</exception>
+        /// <exception cref="ArgumentNullException">pleaseWaitProvider is null.</exception>
+        /// <exception cref="ArgumentNullException">dialogProvider is null.</exception>
         public NavigationService(IWindowProvider windowProvider,
             IMessageBoxProvider messageBoxProvider,
             IPleaseWaitProvider pleaseWaitProvider,
             IDialogProvider dialogProvider)
         {
-            _windowProvider = windowProvider;
-            _messageBoxProvider = messageBoxProvider;
-            _pleaseWaitProvider = pleaseWaitProvider;
-            _dialogProvider = dialogProvider;
+            _windowProvider = windowProvider ?? throw new ArgumentNullException(nameof(windowProvider));
+            _messageBoxProvider = messageBoxProvider ?? throw new ArgumentNullException(nameof(messageBoxProvider));
+            _pleaseWaitProvider = pleaseWaitProvider ?? throw new ArgumentNullException(nameof(pleaseWaitProvider));
+            _dialogProvider = dialogProvider ?? throw new ArgumentNullException(nameof(dialogProvider));
         }
 
         /// <summary>
@@ -56,8 +60,15 @@ namespace SniffCore.Navigation
         /// <param name="windowKey">The key of the window to generate.</param>
         /// <param name="viewModel">The ViewModel to set into the DataContext of the newly created window.</param>
         /// <returns>The task to await.</returns>
+        /// <exception cref="ArgumentNullException">windowKey is null.</exception>
+        /// <exception cref="ArgumentNullException">viewModel is null.</exception>
         public Task ShowWindowAsync(object windowKey, object viewModel)
         {
+            if (windowKey == null)
+                throw new ArgumentNullException(nameof(windowKey));
+            if (viewModel == null)
+                throw new ArgumentNullException(nameof(viewModel));
+
             return ShowWindowAsync(null, windowKey, viewModel);
         }
 
@@ -68,8 +79,18 @@ namespace SniffCore.Navigation
         /// <param name="windowKey">The key of the window to generate.</param>
         /// <param name="viewModel">The ViewModel to set into the DataContext of the newly created window.</param>
         /// <returns>The task to await.</returns>
+        /// <exception cref="ArgumentNullException">ownerWindowKey is null.</exception>
+        /// <exception cref="ArgumentNullException">windowKey is null.</exception>
+        /// <exception cref="ArgumentNullException">viewModel is null.</exception>
         public async Task ShowWindowAsync(object ownerWindowKey, object windowKey, object viewModel)
         {
+            if (ownerWindowKey == null)
+                throw new ArgumentNullException(nameof(ownerWindowKey));
+            if (windowKey == null)
+                throw new ArgumentNullException(nameof(windowKey));
+            if (viewModel == null)
+                throw new ArgumentNullException(nameof(viewModel));
+
             var window = CreateWindow(ownerWindowKey, windowKey, viewModel);
             switch (viewModel)
             {
@@ -120,8 +141,15 @@ namespace SniffCore.Navigation
         /// <param name="windowKey">The key of the window to generate.</param>
         /// <param name="viewModel">The ViewModel to set into the DataContext of the newly created window.</param>
         /// <returns>The task to await with the DialogResult.</returns>
+        /// <exception cref="ArgumentNullException">windowKey is null.</exception>
+        /// <exception cref="ArgumentNullException">viewModel is null.</exception>
         public Task<bool?> ShowModalWindowAsync(object windowKey, object viewModel)
         {
+            if (windowKey == null)
+                throw new ArgumentNullException(nameof(windowKey));
+            if (viewModel == null)
+                throw new ArgumentNullException(nameof(viewModel));
+
             return ShowModalWindowAsync(null, windowKey, viewModel);
         }
 
@@ -132,8 +160,18 @@ namespace SniffCore.Navigation
         /// <param name="windowKey">The key of the window to generate.</param>
         /// <param name="viewModel">The ViewModel to set into the DataContext of the newly created window.</param>
         /// <returns>The task to await with the DialogResult.</returns>
+        /// <exception cref="ArgumentNullException">ownerWindowKey is null.</exception>
+        /// <exception cref="ArgumentNullException">windowKey is null.</exception>
+        /// <exception cref="ArgumentNullException">viewModel is null.</exception>
         public async Task<bool?> ShowModalWindowAsync(object ownerWindowKey, object windowKey, object viewModel)
         {
+            if (ownerWindowKey == null)
+                throw new ArgumentNullException(nameof(ownerWindowKey));
+            if (windowKey == null)
+                throw new ArgumentNullException(nameof(windowKey));
+            if (viewModel == null)
+                throw new ArgumentNullException(nameof(viewModel));
+
             var window = CreateWindow(ownerWindowKey, windowKey, viewModel);
             switch (viewModel)
             {
@@ -180,8 +218,12 @@ namespace SniffCore.Navigation
         /// </summary>
         /// <param name="windowKey">The key of the window which dialog result to set.</param>
         /// <param name="dialogResult">The dialog result to set.</param>
+        /// <exception cref="ArgumentNullException">windowKey is null.</exception>
         public void SetDialogResult(object windowKey, bool? dialogResult)
         {
+            if (windowKey == null)
+                throw new ArgumentNullException(nameof(windowKey));
+
             var window = _windowProvider.GetOpenWindow(windowKey);
             if (window == null)
                 throw new InvalidOperationException($"The window with the key '{windowKey}' cannot be closed. It not open anymore or got not opened by INavigationService.Show[Modal]WindowAsync");
@@ -193,8 +235,12 @@ namespace SniffCore.Navigation
         ///     If the window was modal, the DialogResult will be null.
         /// </summary>
         /// <param name="windowKey">The key of the window to close.</param>
+        /// <exception cref="ArgumentNullException">windowKey is null.</exception>
         public void Close(object windowKey)
         {
+            if (windowKey == null)
+                throw new ArgumentNullException(nameof(windowKey));
+
             var window = _windowProvider.GetOpenWindow(windowKey);
             if (window == null)
                 throw new InvalidOperationException($"The window with the key '{windowKey}' cannot be closed. It not open anymore or got not opened by INavigationService.Show[Modal]WindowAsync");
@@ -208,8 +254,18 @@ namespace SniffCore.Navigation
         /// <param name="controlKey">The ID of the user control to create.</param>
         /// <param name="viewModel">The ViewModel which will be set into the DataContext of newly created user control.</param>
         /// <returns>The task to await.</returns>
+        /// <exception cref="ArgumentNullException">hostId is null.</exception>
+        /// <exception cref="ArgumentNullException">controlKey is null.</exception>
+        /// <exception cref="ArgumentNullException">viewModel is null.</exception>
         public async Task ShowControlAsync(object hostId, object controlKey, object viewModel)
         {
+            if (hostId == null)
+                throw new ArgumentNullException(nameof(hostId));
+            if (controlKey == null)
+                throw new ArgumentNullException(nameof(controlKey));
+            if (viewModel == null)
+                throw new ArgumentNullException(nameof(viewModel));
+
             RemoveDeadNavigationPresenter();
             if (!_navigationPresenter.TryGetValue(hostId, out var reference))
                 throw new InvalidOperationException($"For the ID '{hostId}' no NavigationPresenter is registered");
@@ -248,8 +304,12 @@ namespace SniffCore.Navigation
         /// </summary>
         /// <param name="messageBoxText">The text show in the message box.</param>
         /// <returns>The result of the message box after closing.</returns>
+        /// <exception cref="ArgumentNullException">messageBoxText is null.</exception>
         public MessageBoxResult ShowMessageBox(string messageBoxText)
         {
+            if (messageBoxText == null)
+                throw new ArgumentNullException(nameof(messageBoxText));
+
             return _messageBoxProvider.Show(messageBoxText);
         }
 
@@ -259,8 +319,15 @@ namespace SniffCore.Navigation
         /// <param name="ownerWindowKey">The key of the owner window for the message box.</param>
         /// <param name="messageBoxText">The text show in the message box.</param>
         /// <returns>The result of the message box after closing.</returns>
+        /// <exception cref="ArgumentNullException">ownerWindowKey is null.</exception>
+        /// <exception cref="ArgumentNullException">messageBoxText is null.</exception>
         public MessageBoxResult ShowMessageBox(object ownerWindowKey, string messageBoxText)
         {
+            if (ownerWindowKey == null)
+                throw new ArgumentNullException(nameof(ownerWindowKey));
+            if (messageBoxText == null)
+                throw new ArgumentNullException(nameof(messageBoxText));
+
             return _messageBoxProvider.Show(_windowProvider.GetOpenWindow(ownerWindowKey), messageBoxText);
         }
 
@@ -270,8 +337,15 @@ namespace SniffCore.Navigation
         /// <param name="messageBoxText">The text show in the message box.</param>
         /// <param name="caption">The message box caption.</param>
         /// <returns>The result of the message box after closing.</returns>
+        /// <exception cref="ArgumentNullException">messageBoxText is null.</exception>
+        /// <exception cref="ArgumentNullException">caption is null.</exception>
         public MessageBoxResult ShowMessageBox(string messageBoxText, string caption)
         {
+            if (messageBoxText == null)
+                throw new ArgumentNullException(nameof(messageBoxText));
+            if (caption == null)
+                throw new ArgumentNullException(nameof(caption));
+
             return _messageBoxProvider.Show(messageBoxText, caption);
         }
 
@@ -282,8 +356,18 @@ namespace SniffCore.Navigation
         /// <param name="messageBoxText">The text show in the message box.</param>
         /// <param name="caption">The message box caption.</param>
         /// <returns>The result of the message box after closing.</returns>
+        /// <exception cref="ArgumentNullException">ownerWindowKey is null.</exception>
+        /// <exception cref="ArgumentNullException">messageBoxText is null.</exception>
+        /// <exception cref="ArgumentNullException">caption is null.</exception>
         public MessageBoxResult ShowMessageBox(object ownerWindowKey, string messageBoxText, string caption)
         {
+            if (ownerWindowKey == null)
+                throw new ArgumentNullException(nameof(ownerWindowKey));
+            if (messageBoxText == null)
+                throw new ArgumentNullException(nameof(messageBoxText));
+            if (caption == null)
+                throw new ArgumentNullException(nameof(caption));
+
             return _messageBoxProvider.Show(_windowProvider.GetOpenWindow(ownerWindowKey), messageBoxText, caption);
         }
 
@@ -294,8 +378,15 @@ namespace SniffCore.Navigation
         /// <param name="caption">The message box caption.</param>
         /// <param name="button">The buttons show in the message box.</param>
         /// <returns>The result of the message box after closing.</returns>
+        /// <exception cref="ArgumentNullException">messageBoxText is null.</exception>
+        /// <exception cref="ArgumentNullException">caption is null.</exception>
         public MessageBoxResult ShowMessageBox(string messageBoxText, string caption, MessageBoxButton button)
         {
+            if (messageBoxText == null)
+                throw new ArgumentNullException(nameof(messageBoxText));
+            if (caption == null)
+                throw new ArgumentNullException(nameof(caption));
+
             return _messageBoxProvider.Show(messageBoxText, caption, button);
         }
 
@@ -307,8 +398,18 @@ namespace SniffCore.Navigation
         /// <param name="caption">The message box caption.</param>
         /// <param name="button">The buttons show in the message box.</param>
         /// <returns>The result of the message box after closing.</returns>
+        /// <exception cref="ArgumentNullException">ownerWindowKey is null.</exception>
+        /// <exception cref="ArgumentNullException">messageBoxText is null.</exception>
+        /// <exception cref="ArgumentNullException">caption is null.</exception>
         public MessageBoxResult ShowMessageBox(object ownerWindowKey, string messageBoxText, string caption, MessageBoxButton button)
         {
+            if (ownerWindowKey == null)
+                throw new ArgumentNullException(nameof(ownerWindowKey));
+            if (messageBoxText == null)
+                throw new ArgumentNullException(nameof(messageBoxText));
+            if (caption == null)
+                throw new ArgumentNullException(nameof(caption));
+
             return _messageBoxProvider.Show(_windowProvider.GetOpenWindow(ownerWindowKey), messageBoxText, caption, button);
         }
 
@@ -320,8 +421,18 @@ namespace SniffCore.Navigation
         /// <param name="button">The buttons show in the message box.</param>
         /// <param name="options">The additional options for the message box.</param>
         /// <returns>The result of the message box after closing.</returns>
+        /// <exception cref="ArgumentNullException">messageBoxText is null.</exception>
+        /// <exception cref="ArgumentNullException">caption is null.</exception>
+        /// <exception cref="ArgumentNullException">options is null.</exception>
         public MessageBoxResult ShowMessageBox(string messageBoxText, string caption, MessageBoxButton button, IMessageBoxOptions options)
         {
+            if (messageBoxText == null)
+                throw new ArgumentNullException(nameof(messageBoxText));
+            if (caption == null)
+                throw new ArgumentNullException(nameof(caption));
+            if (options == null)
+                throw new ArgumentNullException(nameof(options));
+
             return _messageBoxProvider.Show(messageBoxText, caption, button, options);
         }
 
@@ -334,8 +445,21 @@ namespace SniffCore.Navigation
         /// <param name="button">The buttons show in the message box.</param>
         /// <param name="options">The additional options for the message box.</param>
         /// <returns>The result of the message box after closing.</returns>
+        /// <exception cref="ArgumentNullException">ownerWindowKey is null.</exception>
+        /// <exception cref="ArgumentNullException">messageBoxText is null.</exception>
+        /// <exception cref="ArgumentNullException">caption is null.</exception>
+        /// <exception cref="ArgumentNullException">options is null.</exception>
         public MessageBoxResult ShowMessageBox(object ownerWindowKey, string messageBoxText, string caption, MessageBoxButton button, IMessageBoxOptions options)
         {
+            if (ownerWindowKey == null)
+                throw new ArgumentNullException(nameof(ownerWindowKey));
+            if (messageBoxText == null)
+                throw new ArgumentNullException(nameof(messageBoxText));
+            if (caption == null)
+                throw new ArgumentNullException(nameof(caption));
+            if (options == null)
+                throw new ArgumentNullException(nameof(options));
+
             return _messageBoxProvider.Show(_windowProvider.GetOpenWindow(ownerWindowKey), messageBoxText, caption, button, options);
         }
 
@@ -344,8 +468,12 @@ namespace SniffCore.Navigation
         /// </summary>
         /// <param name="openFileData">The open file dialog data.</param>
         /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
+        /// <exception cref="ArgumentNullException">openFileData is null.</exception>
         public bool ShowDialog(IOpenFileData openFileData)
         {
+            if (openFileData == null)
+                throw new ArgumentNullException(nameof(openFileData));
+
             return _dialogProvider.Show(openFileData);
         }
 
@@ -354,8 +482,12 @@ namespace SniffCore.Navigation
         /// </summary>
         /// <param name="saveFileData">The save file dialog data.</param>
         /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
+        /// <exception cref="ArgumentNullException">saveFileData is null.</exception>
         public bool ShowDialog(ISaveFileData saveFileData)
         {
+            if (saveFileData == null)
+                throw new ArgumentNullException(nameof(saveFileData));
+
             return _dialogProvider.Show(saveFileData);
         }
 
@@ -364,8 +496,12 @@ namespace SniffCore.Navigation
         /// </summary>
         /// <param name="browseFolderData">The browse folder dialog data.</param>
         /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
+        /// <exception cref="ArgumentNullException">browseFolderData is null.</exception>
         public bool ShowDialog(IBrowseFolderData browseFolderData)
         {
+            if (browseFolderData == null)
+                throw new ArgumentNullException(nameof(browseFolderData));
+
             return _dialogProvider.Show(browseFolderData);
         }
 

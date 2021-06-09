@@ -40,6 +40,8 @@ namespace SniffCore.Windows
         /// </summary>
         /// <param name="windowKey">The key of the window to create.</param>
         /// <returns>The newly created window.</returns>
+        /// <exception cref="ArgumentNullException">windowKey is null.</exception>
+        /// <exception cref="InvalidOperationException">For the windowKey no window is registered.</exception>
         public Window GetNewWindow(object windowKey)
         {
             if (windowKey == null)
@@ -61,6 +63,7 @@ namespace SniffCore.Windows
         /// </summary>
         /// <param name="windowKey">The key of the window to return.</param>
         /// <returns>The open window know by the key.</returns>
+        /// <exception cref="ArgumentNullException">windowKey is null.</exception>
         public Window GetOpenWindow(object windowKey)
         {
             if (windowKey == null)
@@ -78,6 +81,8 @@ namespace SniffCore.Windows
         /// </summary>
         /// <param name="controlKey">The key of the user control to create.</param>
         /// <returns>The newly created user control.</returns>
+        /// <exception cref="ArgumentNullException">controlKey is null.</exception>
+        /// <exception cref="InvalidOperationException">For the control key no user control is registered</exception>
         public UserControl GetNewControl(object controlKey)
         {
             if (controlKey == null)
@@ -102,8 +107,12 @@ namespace SniffCore.Windows
         /// </summary>
         /// <typeparam name="TWindow">The type of the window to register.</typeparam>
         /// <param name="windowKey">The window key.</param>
+        /// <exception cref="ArgumentNullException">windowKey is null.</exception>
         public void RegisterWindow<TWindow>(object windowKey) where TWindow : Window
         {
+            if (windowKey == null)
+                throw new ArgumentNullException(nameof(windowKey));
+
             _windows[windowKey] = typeof(TWindow);
         }
 
@@ -112,8 +121,12 @@ namespace SniffCore.Windows
         /// </summary>
         /// <typeparam name="TControl">The type of the user control to register.</typeparam>
         /// <param name="controlKey">The user control key.</param>
+        /// <exception cref="ArgumentNullException">controlKey is null.</exception>
         public void RegisterControl<TControl>(object controlKey) where TControl : UserControl
         {
+            if (controlKey == null)
+                throw new ArgumentNullException(nameof(controlKey));
+
             _controls[controlKey] = typeof(TControl);
         }
 

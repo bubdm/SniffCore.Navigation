@@ -25,18 +25,18 @@ namespace SniffCore.MessageBoxes
         ///     Creates a new instance of <see cref="MessageBoxOptions" />.
         /// </summary>
         /// <param name="icon">The icon to show in the message box.</param>
-        public MessageBoxOptions(MessageBoxImage? icon)
-            : this(icon, null)
+        public MessageBoxOptions(MessageBoxImage icon)
         {
+            Icon = icon;
         }
 
         /// <summary>
         ///     Creates a new instance of <see cref="MessageBoxOptions" />.
         /// </summary>
         /// <param name="defaultResult">The default result of the message box.</param>
-        public MessageBoxOptions(MessageBoxResult? defaultResult)
-            : this(null, defaultResult)
+        public MessageBoxOptions(MessageBoxResult defaultResult)
         {
+            DefaultResult = defaultResult;
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace SniffCore.MessageBoxes
         /// </summary>
         /// <param name="icon">The icon to show in the message box.</param>
         /// <param name="defaultResult">The default result of the message box.</param>
-        public MessageBoxOptions(MessageBoxImage? icon, MessageBoxResult? defaultResult)
+        public MessageBoxOptions(MessageBoxImage icon, MessageBoxResult defaultResult)
         {
             Icon = icon;
             DefaultResult = defaultResult;
