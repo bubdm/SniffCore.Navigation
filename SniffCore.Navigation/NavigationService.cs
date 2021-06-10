@@ -24,7 +24,7 @@ namespace SniffCore.Navigation
     /// <summary>
     ///     Provides ways to show windows, user controls, dialogs and more.
     /// </summary>
-    public sealed class NavigationService : INavigationService
+    public class NavigationService : INavigationService
     {
         private static readonly Dictionary<object, WeakReference> _navigationPresenter = new Dictionary<object, WeakReference>();
         private readonly IDialogProvider _dialogProvider;
@@ -96,7 +96,7 @@ namespace SniffCore.Navigation
             {
                 case IAsyncLoader asyncLoader:
                 {
-                    window.Show();
+                    WindowShow(window);
                     await asyncLoader.LoadAsync();
                     break;
                 }
@@ -124,13 +124,13 @@ namespace SniffCore.Navigation
                     loadingProgress.ProgressCanceled -= LoadingProgressOnProgressCanceled;
                     _pleaseWaitProvider.Close();
                     if (!isCanceled)
-                        window.Show();
+                        WindowShow(window);
                     break;
                 }
                 default:
                 {
-                    window.Show();
-                    break;
+                    WindowShow(window);
+                        break;
                 }
             }
         }
@@ -539,6 +539,24 @@ namespace SniffCore.Navigation
         {
             RemoveDeadNavigationPresenter();
             _navigationPresenter[controlKey] = new WeakReference(control);
+        }
+
+        // Unit tests only.
+        internal static Dictionary<object, WeakReference> GetRegisteredControls()
+        {
+            return _navigationPresenter;
+        }
+
+        // For unit test since Window.Show cannot be done there
+        internal virtual void WindowShow(Window window)
+        {
+            window.Show();
+        }
+
+        // For unit test since Window.ShowDialog cannot be done there
+        internal virtual bool? WindowShowDialog(Window window)
+        {
+            return window.ShowDialog();
         }
     }
 }

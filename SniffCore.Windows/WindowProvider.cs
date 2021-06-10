@@ -139,5 +139,23 @@ namespace SniffCore.Windows
         {
             obj.SetValue(InstanceProperty, value);
         }
+
+        // Unit tests
+        internal Dictionary<object, Type> RegisteredControls()
+        {
+            return _controls;
+        }
+
+        // Unit tests
+        internal Dictionary<Guid, Tuple<object, Window>> OpenWindows()
+        {
+            return _openWindows;
+        }
+
+        // Unit tests
+        internal Dictionary<object, Type> RegisteredWindows()
+        {
+            return _windows;
+        }
     }
 }

@@ -21,6 +21,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SniffCore.Windows.Tests", "SniffCore.Windows.Tests\SniffCore.Windows.Tests.csproj", "{072210C7-6384-4881-BE9E-6B0296A99731}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SniffCore.Dialogs.Tests", "SniffCore.Dialogs.Tests\SniffCore.Dialogs.Tests.csproj", "{F304CFED-6560-4813-9AB1-3AACB74B4D60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SniffCore.MessageBoxes.Tests", "SniffCore.MessageBoxes.Tests\SniffCore.MessageBoxes.Tests.csproj", "{F77CEC4E-C512-4752-8670-C47FF83E1A5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SniffCore.Navigation.Tests", "SniffCore.Navigation.Tests\SniffCore.Navigation.Tests.csproj", "{48C4405C-BE17-4A51-AC54-C3ED29664DAF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +59,22 @@ Global
 		{2E4BC2A6-35C0-452B-9CDC-93BC2CBFF09B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E4BC2A6-35C0-452B-9CDC-93BC2CBFF09B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E4BC2A6-35C0-452B-9CDC-93BC2CBFF09B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{072210C7-6384-4881-BE9E-6B0296A99731}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{072210C7-6384-4881-BE9E-6B0296A99731}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{072210C7-6384-4881-BE9E-6B0296A99731}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{072210C7-6384-4881-BE9E-6B0296A99731}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F304CFED-6560-4813-9AB1-3AACB74B4D60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F304CFED-6560-4813-9AB1-3AACB74B4D60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F304CFED-6560-4813-9AB1-3AACB74B4D60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F304CFED-6560-4813-9AB1-3AACB74B4D60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F77CEC4E-C512-4752-8670-C47FF83E1A5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F77CEC4E-C512-4752-8670-C47FF83E1A5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F77CEC4E-C512-4752-8670-C47FF83E1A5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F77CEC4E-C512-4752-8670-C47FF83E1A5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48C4405C-BE17-4A51-AC54-C3ED29664DAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48C4405C-BE17-4A51-AC54-C3ED29664DAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48C4405C-BE17-4A51-AC54-C3ED29664DAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48C4405C-BE17-4A51-AC54-C3ED29664DAF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
