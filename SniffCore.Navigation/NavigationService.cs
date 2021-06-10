@@ -69,7 +69,7 @@ namespace SniffCore.Navigation
             if (viewModel == null)
                 throw new ArgumentNullException(nameof(viewModel));
 
-            return ShowWindowAsync(null, windowKey, viewModel);
+            return ShowWindowImplAsync(null, windowKey, viewModel);
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace SniffCore.Navigation
         /// <exception cref="ArgumentNullException">ownerWindowKey is null.</exception>
         /// <exception cref="ArgumentNullException">windowKey is null.</exception>
         /// <exception cref="ArgumentNullException">viewModel is null.</exception>
-        public async Task ShowWindowAsync(object ownerWindowKey, object windowKey, object viewModel)
+        public Task ShowWindowAsync(object ownerWindowKey, object windowKey, object viewModel)
         {
             if (ownerWindowKey == null)
                 throw new ArgumentNullException(nameof(ownerWindowKey));
@@ -91,6 +91,11 @@ namespace SniffCore.Navigation
             if (viewModel == null)
                 throw new ArgumentNullException(nameof(viewModel));
 
+            return ShowWindowImplAsync(ownerWindowKey, windowKey, viewModel);
+        }
+
+        private async Task ShowWindowImplAsync(object ownerWindowKey, object windowKey, object viewModel)
+        {
             var window = CreateWindow(ownerWindowKey, windowKey, viewModel);
             switch (viewModel)
             {
@@ -150,7 +155,7 @@ namespace SniffCore.Navigation
             if (viewModel == null)
                 throw new ArgumentNullException(nameof(viewModel));
 
-            return ShowModalWindowAsync(null, windowKey, viewModel);
+            return ShowModalWindowImplAsync(null, windowKey, viewModel);
         }
 
         /// <summary>
@@ -163,7 +168,7 @@ namespace SniffCore.Navigation
         /// <exception cref="ArgumentNullException">ownerWindowKey is null.</exception>
         /// <exception cref="ArgumentNullException">windowKey is null.</exception>
         /// <exception cref="ArgumentNullException">viewModel is null.</exception>
-        public async Task<bool?> ShowModalWindowAsync(object ownerWindowKey, object windowKey, object viewModel)
+        public Task<bool?> ShowModalWindowAsync(object ownerWindowKey, object windowKey, object viewModel)
         {
             if (ownerWindowKey == null)
                 throw new ArgumentNullException(nameof(ownerWindowKey));
@@ -172,43 +177,48 @@ namespace SniffCore.Navigation
             if (viewModel == null)
                 throw new ArgumentNullException(nameof(viewModel));
 
+            return ShowModalWindowImplAsync(ownerWindowKey, windowKey, viewModel);
+        }
+
+        private async Task<bool?> ShowModalWindowImplAsync(object ownerWindowKey, object windowKey, object viewModel)
+        {
             var window = CreateWindow(ownerWindowKey, windowKey, viewModel);
             switch (viewModel)
             {
                 case IAsyncLoader asyncLoader:
-                {
-                    asyncLoader.LoadAsync().FireAndForget();
-                    return window.ShowDialog();
-                }
+                    {
+                        asyncLoader.LoadAsync().FireAndForget();
+                        return WindowShowDialog(window);
+                    }
                 case IDelayedAsyncLoader delayedAsyncLoader:
-                {
-                    var loadingProgress = new LoadingProgress();
-                    var isCanceled = false;
-
-                    void LoadingProgressOnProgressUpdated(object sender, ProgressDataEventArgs e)
                     {
-                        _pleaseWaitProvider.HandleProgress(e.Data);
-                    }
+                        var loadingProgress = new LoadingProgress();
+                        var isCanceled = false;
 
-                    void LoadingProgressOnProgressCanceled(object sender, LoadingCanceledEventArgs e)
-                    {
-                        isCanceled = true;
-                        _pleaseWaitProvider.HandleCanceled(e.Data);
-                    }
+                        void LoadingProgressOnProgressUpdated(object sender, ProgressDataEventArgs e)
+                        {
+                            _pleaseWaitProvider.HandleProgress(e.Data);
+                        }
 
-                    loadingProgress.ProgressUpdated += LoadingProgressOnProgressUpdated;
-                    loadingProgress.ProgressCanceled += LoadingProgressOnProgressCanceled;
-                    _pleaseWaitProvider.Show();
-                    await delayedAsyncLoader.LoadAsync(loadingProgress);
-                    loadingProgress.ProgressUpdated -= LoadingProgressOnProgressUpdated;
-                    loadingProgress.ProgressCanceled -= LoadingProgressOnProgressCanceled;
-                    _pleaseWaitProvider.Close();
-                    return isCanceled ? null : window.ShowDialog();
-                }
+                        void LoadingProgressOnProgressCanceled(object sender, LoadingCanceledEventArgs e)
+                        {
+                            isCanceled = true;
+                            _pleaseWaitProvider.HandleCanceled(e.Data);
+                        }
+
+                        loadingProgress.ProgressUpdated += LoadingProgressOnProgressUpdated;
+                        loadingProgress.ProgressCanceled += LoadingProgressOnProgressCanceled;
+                        _pleaseWaitProvider.Show();
+                        await delayedAsyncLoader.LoadAsync(loadingProgress);
+                        loadingProgress.ProgressUpdated -= LoadingProgressOnProgressUpdated;
+                        loadingProgress.ProgressCanceled -= LoadingProgressOnProgressCanceled;
+                        _pleaseWaitProvider.Close();
+                        return isCanceled ? null : WindowShowDialog(window);
+                    }
                 default:
-                {
-                    return window.ShowDialog();
-                }
+                    {
+                        return WindowShowDialog(window);
+                    }
             }
         }
 
