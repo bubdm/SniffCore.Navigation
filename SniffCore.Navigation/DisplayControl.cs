@@ -91,12 +91,18 @@ namespace SniffCore.Navigation
         private static void OnViewModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var control = (DisplayControl) d;
-            if (e.NewValue is IAsyncLoader asyncLoader)
-                control.DisplayAndLoadAsync(asyncLoader).FireAndForget();
-            else if (e.NewValue is IDelayedAsyncLoader delayedAsyncLoader)
-                control.LoadAndDisplayAsync(delayedAsyncLoader).FireAndForget();
-            else
-                control.Content = e.NewValue;
+            switch (e.NewValue)
+            {
+                case IAsyncLoader asyncLoader:
+                    control.DisplayAndLoadAsync(asyncLoader).FireAndForget();
+                    break;
+                case IDelayedAsyncLoader delayedAsyncLoader:
+                    control.LoadAndDisplayAsync(delayedAsyncLoader).FireAndForget();
+                    break;
+                default:
+                    control.Content = e.NewValue;
+                    break;
+            }
         }
 
         private async Task DisplayAndLoadAsync(IAsyncLoader asyncLoader)
