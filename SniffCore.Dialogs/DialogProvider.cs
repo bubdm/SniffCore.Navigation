@@ -13,6 +13,65 @@ namespace SniffCore.Dialogs
     /// <summary>
     ///     Provides way how to show system dialogs for files and folders.
     /// </summary>
+    /// <example>
+    /// <code lang="csharp">
+    /// <![CDATA[
+    /// public class ViewModel : ObservableObject
+    /// {
+    ///     private IDialogProvider _dialogProvider;
+    ///
+    ///     public ViewModel(IDialogProvider dialogProvider)
+    ///     {
+    ///         _dialogProvider = dialogProvider;
+    ///     }
+    ///
+    ///     public string GetFile()
+    ///     {
+    ///         var data = new OpenFileData
+    ///         {
+    ///             CheckFileExists = true,
+    ///             MultiSelect = false
+    ///         };
+    ///
+    ///         if (_dialogProvider.Show(data))
+    ///             return data.FileName;
+    ///
+    ///         return null;
+    ///     }
+    /// }
+    /// ]]>
+    /// </code>
+    ///
+    /// <code lang="csharp">
+    /// <![CDATA[
+    /// [TestFixture]
+    /// public class ViewModelTests
+    /// {
+    ///     private Mock<IDialogProvider> _dialogProvider;
+    ///     private ViewModel _target;
+    ///
+    ///     [SetUp]
+    ///     public void Setup()
+    ///     {
+    ///         _dialogProvider = new Mock<IDialogProvider>();
+    ///         _target = new ViewModel(_dialogProvider.Object);
+    ///     }
+    ///
+    ///     [Test]
+    ///     public void GetFile_Called_ReturnsTheUserSelectedFile()
+    ///     {
+    ///         _dialogProvider.Setup(x => x.Show(Arg.Any<IOpenFileData>())
+    ///             .Callback(e => e.FileName = "filename")
+    ///             .Returns(true);
+    ///
+    ///         var result = _target.GetFile();
+    ///
+    ///         Assert.That(result, Is.EqualTo("filename"));
+    ///     }
+    /// }
+    /// ]]>
+    /// </code>
+    /// </example>
     public sealed class DialogProvider : IDialogProvider
     {
         /// <summary>

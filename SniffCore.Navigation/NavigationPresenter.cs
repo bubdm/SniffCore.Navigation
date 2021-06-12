@@ -15,6 +15,36 @@ namespace SniffCore.Navigation
     /// <summary>
     ///     Represents a host where a user control will be placed by the <see cref="INavigationService" />.
     /// </summary>
+    /// <example>
+    /// <code lang="XAML">
+    /// <![CDATA[
+    /// <Window xmlns:sniffcore="http://sniffcore.com">
+    ///     <sniffcore:NavigationPresenter ID="MainSpot" />
+    /// </Window>
+    /// ]]>
+    /// </code>
+    ///
+    /// <code lang="csharp">
+    /// <![CDATA[
+    /// public class ViewModel : ObservableObject
+    /// {
+    ///     private INavigationService _navigationService;
+    ///
+    ///     public ViewModel(INavigationService navigationService)
+    ///     {
+    ///         _navigationService = navigationService;
+    ///     }
+    ///
+    ///     public async Task SwitchAsync()
+    ///     {
+    ///         var vm = new ControlViewModel();
+    ///         // "Control" is the user control registered in the IWindowService for the INavigationService.
+    ///         await _navigationService.ShowControlAsync("MainSpot", "Control", vm);
+    ///     }
+    /// }
+    /// ]]>
+    /// </code>
+    /// </example>
     public class NavigationPresenter : Control
     {
         /// <summary>

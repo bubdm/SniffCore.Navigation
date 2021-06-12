@@ -16,6 +16,48 @@ namespace SniffCore.Windows
     /// <summary>
     ///     Provides possibilities to create and display windows and user controls.
     /// </summary>
+    /// 
+    /// <example>
+    /// <code lang="csharp">
+    /// <![CDATA[
+    /// public class Bootstrapper
+    /// {
+    ///     public Bootstrapper()
+    ///     {
+    ///         _container = new UnityContainer();
+    ///         _container.RegisterSingleton<IWindowProvider, WindowProvider>();
+    ///     }
+    /// 
+    ///     public void Startup()
+    ///     {
+    ///         var provider = (WindowProvider)_container.Resolve<IWindowProvider>();
+    ///         provider.Register<MainView>("MainView");
+    ///     }
+    /// }
+    /// ]]>
+    /// </code>
+    ///
+    /// <code lang="csharp">
+    /// <![CDATA[
+    /// public class ViewModel : ObservableObject
+    /// {
+    ///     private IWindowProvider _windowProvider;
+    ///
+    ///     public ViewModel(IWindowProvider windowProvider)
+    ///     {
+    ///         _windowProvider = windowProvider;
+    ///     }
+    ///
+    ///     public void Show(object viewModel)
+    ///     {
+    ///         var window = _windowProvider.GetNewWindow("MainView");
+    ///         window.DataContext = viewModel;
+    ///         window.ShowDialog();
+    ///     }
+    /// }
+    /// ]]>
+    /// </code>
+    /// </example>
     public sealed class WindowProvider : IWindowProvider
     {
         private static readonly DependencyProperty InstanceProperty =

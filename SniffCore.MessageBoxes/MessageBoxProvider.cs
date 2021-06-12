@@ -14,6 +14,67 @@ namespace SniffCore.MessageBoxes
     /// <summary>
     ///     Provides possibilities to show message boxes.
     /// </summary>
+    /// <example>
+    /// <code lang="csharp">
+    /// <![CDATA[
+    /// public class ViewModel : ObservableObject
+    /// {
+    ///     private IMessageBoxProvider _messageBoxProvider;
+    ///
+    ///     public ViewModel(IMessageBoxProvider messageBoxProvider)
+    ///     {
+    ///         _messageBoxProvider = messageBoxProvider;
+    ///     }
+    ///
+    ///     public bool ShallDeleteFile()
+    ///     {
+    ///         var result = _messageBoxProvider.Show("Do you want to delete the file?", "Question", MessageBoxButton.YesNo);
+    ///         return result == MessageBoxResult.Yes;
+    ///     }
+    /// }
+    /// ]]>
+    /// </code>
+    ///
+    /// <code lang="csharp">
+    /// <![CDATA[
+    /// [TestFixture]
+    /// public class ViewModelTests
+    /// {
+    ///     private Mock<IMessageBoxProvider> _messageBoxProvider;
+    ///     private ViewModel _target;
+    ///
+    ///     [SetUp]
+    ///     public void Setup()
+    ///     {
+    ///         _messageBoxProvider = new Mock<IMessageBoxProvider>();
+    ///         _target = new ViewModel(_messageBoxProvider.Object);
+    ///     }
+    ///
+    ///     [Test]
+    ///     public void ShallDeleteFile_UserConfirmed_ReturnsTrue()
+    ///     {
+    ///         _messageBoxProvider.Setup(x => x.Show(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<MessageBoxButton>())
+    ///             .Returns(MessageBoxResult.Yes);
+    ///
+    ///         var result = _target.ShallDeleteFile();
+    ///
+    ///         Assert.That(result, Is.True);
+    ///     }
+    ///
+    ///     [Test]
+    ///     public void ShallDeleteFile_UserRejected_ReturnsTrue()
+    ///     {
+    ///         _messageBoxProvider.Setup(x => x.Show(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<MessageBoxButton>())
+    ///             .Returns(MessageBoxResult.No);
+    ///
+    ///         var result = _target.ShallDeleteFile();
+    ///
+    ///         Assert.That(result, Is.False);
+    ///     }
+    /// }
+    /// ]]>
+    /// </code>
+    /// </example>
     public sealed class MessageBoxProvider : IMessageBoxProvider
     {
         /// <summary>

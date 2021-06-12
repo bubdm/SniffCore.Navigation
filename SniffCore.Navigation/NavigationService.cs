@@ -24,6 +24,98 @@ namespace SniffCore.Navigation
     /// <summary>
     ///     Provides ways to show windows, user controls, dialogs and more.
     /// </summary>
+    /// <example>
+    /// <code lang="csharp">
+    /// <![CDATA[
+    /// public void Bootstrapper
+    /// {
+    ///     IUnityContainer _unityContainer;
+    ///
+    ///     public Bootstrapper()
+    ///     {
+    ///         _unityContainer = new UnityContainer();
+    ///         _unityContainer.RegisterSingleton<IWindowProvider, WindowProvider>();
+    ///         _unityContainer.RegisterType<IDialogProvider, DialogProvider>();
+    ///         _unityContainer.RegisterType<IMessageBoxProvider, MessageBoxProvider>();
+    ///         _unityContainer.RegisterType<IPleaseWaitProvider, PleaseWaitProvider>();
+    ///         _unityContainer.RegisterType<INavigationService, NavigationService>();
+    ///
+    ///         RegisterViews();
+    ///     }
+    ///
+    ///     public void RegisterViews()
+    ///     {
+    ///         var windowProvider = (WindowProvider) _unityContainer.Resolve<IWindowProvider>();
+    ///         
+    ///         windowProvider.RegisterWindow<MainView>("MainView");
+    ///         windowProvider.RegisterWindow<SubView>("SubView");
+    ///         
+    ///         windowProvider.RegisterControl<DialogsView>("DialogsView");
+    ///         windowProvider.RegisterControl<DisplayControlView>("DisplayControlView");
+    ///     }
+    /// }
+    /// ]]>
+    /// </code>
+    ///
+    /// <code lang="csharp">
+    /// <![CDATA[
+    /// public class WindowViewModel : ObservableObject, IAsyncLoader
+    /// {
+    ///     public async Task LoadAsync()
+    ///     {
+    ///         // Loads the data as soon the window got shown.
+    ///         await Task.CompletedTask;
+    ///     }
+    /// }
+    /// ]]>
+    /// </code>
+    ///
+    /// <code lang="csharp">
+    /// <![CDATA[
+    /// public void ViewModel : ObservableObject
+    /// {
+    ///     private INavigationService _navigationService;
+    /// 
+    ///     public ViewModel(INavigationService navigationService)
+    ///     {
+    ///         _navigationService = navigationService;
+    ///     }
+    ///
+    ///     public async Task ShowWindow()
+    ///     {
+    ///         var vm = new WindowViewModel();
+    ///         await _navigationService.ShowModalWindow("MainView", vm);
+    ///     }
+    /// }
+    /// ]]>
+    /// </code>
+    ///
+    /// <code lang="csharp">
+    /// <![CDATA[
+    /// [TestFixture]
+    /// public class ViewModelTests
+    /// {
+    ///     private Mock<INavigationService> _navigationService;
+    ///     private ViewModel _target;
+    ///
+    ///     [SetUp]
+    ///     public void Setup()
+    ///     {
+    ///         _navigationService = new Mock<INavigationService>();
+    ///         _target = new ViewModel(_navigationService.Object);
+    ///     }
+    ///
+    ///     [Test]
+    ///     public void ShowWindow_Called_ShowsTheWindow()
+    ///     {
+    ///         _target.ShowWindow();
+    ///
+    ///         _navigationService.Verify(x => x.ShowModalWindow(Args.Any<string>(), Args.Any<object>()), Times.Once);
+    ///     }
+    /// }
+    /// ]]>
+    /// </code>
+    /// </example>
     public class NavigationService : INavigationService
     {
         private static readonly Dictionary<object, WeakReference> _navigationPresenter = new Dictionary<object, WeakReference>();

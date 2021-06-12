@@ -18,6 +18,43 @@ namespace SniffCore.Navigation
     ///     Provides a way to display a ViewModel where the View is found by the Resources but allow loading of IAsyncLoader
     ///     and Please Wait and more.
     /// </summary>
+    /// <example>
+    /// <code lang="XAML">
+    /// <![CDATA[
+    /// <Window xmlns:sniffcore="http://sniffcore.com">
+    ///     <sniffcore:DisplayControl ViewModel="{Binding TheViewModel}">
+    ///         <sniffcore:DisplayControl.Resources>
+    ///             <DataTemplate DataType="{x:Type viewModels:ControlViewModel}">
+    ///                 <ControlView />
+    ///             </DataTemplate>
+    ///         </sniffcore:DisplayControl.Resources>
+    ///     </sniffcore:DisplayControl>
+    /// </Window>
+    /// ]]>
+    /// </code>
+    ///
+    /// <code lang="csharp">
+    /// <![CDATA[
+    /// public class ViewModel : ObservableObject
+    /// {
+    ///     private INavigationService _navigationService;
+    ///
+    ///     public ViewModel(INavigationService navigationService)
+    ///     {
+    ///         _navigationService = navigationService;
+    ///     }
+    ///
+    ///     public ObservableObject TheViewModel { get; private set; }
+    ///     
+    ///     public void Switch()
+    ///     {
+    ///         TheViewModel = new ControlViewModel();
+    ///         NotifyPropertyChanged(nameof(TheViewModel));
+    ///     }
+    /// }
+    /// ]]>
+    /// </code>
+    /// </example>
     public class DisplayControl : Control
     {
         /// <summary>
