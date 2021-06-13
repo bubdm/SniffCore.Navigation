@@ -11,11 +11,11 @@ The main assembly SniffCore.Navigation depends on all of them.
 
 |Assembly|Content
 |-|-
-|SniffCore.Dialogs|This assembly provides ways how to show system dialogs for files or folders.
-|SniffCore.MessageBoxes|This assembly provides ways how to show message boxes.
+|SniffCore.Navigation.Dialogs|This assembly provides ways how to show system dialogs for files or folders.
+|SniffCore.Navigation.MessageBoxes|This assembly provides ways how to show message boxes.
 |SniffCore.Navigation|This is the main assembly to show windows, user controls, dialogs and work with them.
-|SniffCore.PleaseWaits|This assembly provides ways how to show please wait overlays.
-|SniffCore.Windows|This assembly provides ways how to create and show windows.
+|SniffCore.Navigation.PleaseWaits|This assembly provides ways how to show please wait overlays.
+|SniffCore.Navigation.Windows|This assembly provides ways how to create and show windows.
 
 ## Getting Started
 First you register all needed assemblies in your IOC container like Unity
