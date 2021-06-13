@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using SniffCore.PleaseWaits;
+using SniffCore.Navigation.PleaseWaits;
 
 namespace SniffCore.Navigation.Tests
 {

@@ -1,6 +1,6 @@
 ﻿using SniffCore;
-using SniffCore.Dialogs;
 using SniffCore.Navigation;
+using SniffCore.Navigation.Dialogs;
 
 namespace TryOut.ViewModels.MainPages
 {

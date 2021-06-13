@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows;
-using SniffCore.PleaseWaits;
+using SniffCore.Navigation.PleaseWaits;
 using TryOut.ViewModels;
 using TryOut.Views;
 

@@ -5,8 +5,8 @@
 
 using System.Threading.Tasks;
 using System.Windows;
-using SniffCore.Dialogs;
-using SniffCore.MessageBoxes;
+using SniffCore.Navigation.Dialogs;
+using SniffCore.Navigation.MessageBoxes;
 
 namespace SniffCore.Navigation
 {

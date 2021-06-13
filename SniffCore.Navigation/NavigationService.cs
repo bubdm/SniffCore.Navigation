@@ -9,11 +9,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using SniffCore.Dialogs;
-using SniffCore.MessageBoxes;
+using SniffCore.Navigation.Dialogs;
 using SniffCore.Navigation.External;
-using SniffCore.PleaseWaits;
-using SniffCore.Windows;
+using SniffCore.Navigation.MessageBoxes;
+using SniffCore.Navigation.PleaseWaits;
+using SniffCore.Navigation.Windows;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable ClassNeverInstantiated.Global
@@ -25,12 +25,12 @@ namespace SniffCore.Navigation
     ///     Provides ways to show windows, user controls, dialogs and more.
     /// </summary>
     /// <example>
-    /// <code lang="csharp">
+    ///     <code lang="csharp">
     /// <![CDATA[
     /// public void Bootstrapper
     /// {
     ///     IUnityContainer _unityContainer;
-    ///
+    /// 
     ///     public Bootstrapper()
     ///     {
     ///         _unityContainer = new UnityContainer();
@@ -39,10 +39,10 @@ namespace SniffCore.Navigation
     ///         _unityContainer.RegisterType<IMessageBoxProvider, MessageBoxProvider>();
     ///         _unityContainer.RegisterType<IPleaseWaitProvider, PleaseWaitProvider>();
     ///         _unityContainer.RegisterType<INavigationService, NavigationService>();
-    ///
+    /// 
     ///         RegisterViews();
     ///     }
-    ///
+    /// 
     ///     public void RegisterViews()
     ///     {
     ///         var windowProvider = (WindowProvider) _unityContainer.Resolve<IWindowProvider>();
@@ -56,8 +56,7 @@ namespace SniffCore.Navigation
     /// }
     /// ]]>
     /// </code>
-    ///
-    /// <code lang="csharp">
+    ///     <code lang="csharp">
     /// <![CDATA[
     /// public class WindowViewModel : ObservableObject, IAsyncLoader
     /// {
@@ -69,8 +68,7 @@ namespace SniffCore.Navigation
     /// }
     /// ]]>
     /// </code>
-    ///
-    /// <code lang="csharp">
+    ///     <code lang="csharp">
     /// <![CDATA[
     /// public void ViewModel : ObservableObject
     /// {
@@ -80,7 +78,7 @@ namespace SniffCore.Navigation
     ///     {
     ///         _navigationService = navigationService;
     ///     }
-    ///
+    /// 
     ///     public async Task ShowWindow()
     ///     {
     ///         var vm = new WindowViewModel();
@@ -89,27 +87,26 @@ namespace SniffCore.Navigation
     /// }
     /// ]]>
     /// </code>
-    ///
-    /// <code lang="csharp">
+    ///     <code lang="csharp">
     /// <![CDATA[
     /// [TestFixture]
     /// public class ViewModelTests
     /// {
     ///     private Mock<INavigationService> _navigationService;
     ///     private ViewModel _target;
-    ///
+    /// 
     ///     [SetUp]
     ///     public void Setup()
     ///     {
     ///         _navigationService = new Mock<INavigationService>();
     ///         _target = new ViewModel(_navigationService.Object);
     ///     }
-    ///
+    /// 
     ///     [Test]
     ///     public void ShowWindow_Called_ShowsTheWindow()
     ///     {
     ///         _target.ShowWindow();
-    ///
+    /// 
     ///         _navigationService.Verify(x => x.ShowModalWindow(Args.Any<string>(), Args.Any<object>()), Times.Once);
     ///     }
     /// }
@@ -186,52 +183,6 @@ namespace SniffCore.Navigation
             return ShowWindowImplAsync(ownerWindowKey, windowKey, viewModel);
         }
 
-        private async Task ShowWindowImplAsync(object ownerWindowKey, object windowKey, object viewModel)
-        {
-            var window = CreateWindow(ownerWindowKey, windowKey, viewModel);
-            switch (viewModel)
-            {
-                case IAsyncLoader asyncLoader:
-                {
-                    WindowShow(window);
-                    await asyncLoader.LoadAsync();
-                    break;
-                }
-                case IDelayedAsyncLoader delayedAsyncLoader:
-                {
-                    var loadingProgress = new LoadingProgress();
-                    var isCanceled = false;
-
-                    void LoadingProgressOnProgressUpdated(object sender, ProgressDataEventArgs e)
-                    {
-                        _pleaseWaitProvider.HandleProgress(e.Data);
-                    }
-
-                    void LoadingProgressOnProgressCanceled(object sender, LoadingCanceledEventArgs e)
-                    {
-                        isCanceled = true;
-                        _pleaseWaitProvider.HandleCanceled(e.Data);
-                    }
-
-                    loadingProgress.ProgressUpdated += LoadingProgressOnProgressUpdated;
-                    loadingProgress.ProgressCanceled += LoadingProgressOnProgressCanceled;
-                    _pleaseWaitProvider.Show();
-                    await delayedAsyncLoader.LoadAsync(loadingProgress);
-                    loadingProgress.ProgressUpdated -= LoadingProgressOnProgressUpdated;
-                    loadingProgress.ProgressCanceled -= LoadingProgressOnProgressCanceled;
-                    _pleaseWaitProvider.Close();
-                    if (!isCanceled)
-                        WindowShow(window);
-                    break;
-                }
-                default:
-                {
-                    WindowShow(window);
-                        break;
-                }
-            }
-        }
-
         /// <summary>
         ///     Shows a modal window.
         /// </summary>
@@ -270,48 +221,6 @@ namespace SniffCore.Navigation
                 throw new ArgumentNullException(nameof(viewModel));
 
             return ShowModalWindowImplAsync(ownerWindowKey, windowKey, viewModel);
-        }
-
-        private async Task<bool?> ShowModalWindowImplAsync(object ownerWindowKey, object windowKey, object viewModel)
-        {
-            var window = CreateWindow(ownerWindowKey, windowKey, viewModel);
-            switch (viewModel)
-            {
-                case IAsyncLoader asyncLoader:
-                    {
-                        asyncLoader.LoadAsync().FireAndForget();
-                        return WindowShowDialog(window);
-                    }
-                case IDelayedAsyncLoader delayedAsyncLoader:
-                    {
-                        var loadingProgress = new LoadingProgress();
-                        var isCanceled = false;
-
-                        void LoadingProgressOnProgressUpdated(object sender, ProgressDataEventArgs e)
-                        {
-                            _pleaseWaitProvider.HandleProgress(e.Data);
-                        }
-
-                        void LoadingProgressOnProgressCanceled(object sender, LoadingCanceledEventArgs e)
-                        {
-                            isCanceled = true;
-                            _pleaseWaitProvider.HandleCanceled(e.Data);
-                        }
-
-                        loadingProgress.ProgressUpdated += LoadingProgressOnProgressUpdated;
-                        loadingProgress.ProgressCanceled += LoadingProgressOnProgressCanceled;
-                        _pleaseWaitProvider.Show();
-                        await delayedAsyncLoader.LoadAsync(loadingProgress);
-                        loadingProgress.ProgressUpdated -= LoadingProgressOnProgressUpdated;
-                        loadingProgress.ProgressCanceled -= LoadingProgressOnProgressCanceled;
-                        _pleaseWaitProvider.Close();
-                        return isCanceled ? null : WindowShowDialog(window);
-                    }
-                default:
-                    {
-                        return WindowShowDialog(window);
-                    }
-            }
         }
 
         /// <summary>
@@ -605,6 +514,94 @@ namespace SniffCore.Navigation
                 throw new ArgumentNullException(nameof(browseFolderData));
 
             return _dialogProvider.Show(browseFolderData);
+        }
+
+        private async Task ShowWindowImplAsync(object ownerWindowKey, object windowKey, object viewModel)
+        {
+            var window = CreateWindow(ownerWindowKey, windowKey, viewModel);
+            switch (viewModel)
+            {
+                case IAsyncLoader asyncLoader:
+                {
+                    WindowShow(window);
+                    await asyncLoader.LoadAsync();
+                    break;
+                }
+                case IDelayedAsyncLoader delayedAsyncLoader:
+                {
+                    var loadingProgress = new LoadingProgress();
+                    var isCanceled = false;
+
+                    void LoadingProgressOnProgressUpdated(object sender, ProgressDataEventArgs e)
+                    {
+                        _pleaseWaitProvider.HandleProgress(e.Data);
+                    }
+
+                    void LoadingProgressOnProgressCanceled(object sender, LoadingCanceledEventArgs e)
+                    {
+                        isCanceled = true;
+                        _pleaseWaitProvider.HandleCanceled(e.Data);
+                    }
+
+                    loadingProgress.ProgressUpdated += LoadingProgressOnProgressUpdated;
+                    loadingProgress.ProgressCanceled += LoadingProgressOnProgressCanceled;
+                    _pleaseWaitProvider.Show();
+                    await delayedAsyncLoader.LoadAsync(loadingProgress);
+                    loadingProgress.ProgressUpdated -= LoadingProgressOnProgressUpdated;
+                    loadingProgress.ProgressCanceled -= LoadingProgressOnProgressCanceled;
+                    _pleaseWaitProvider.Close();
+                    if (!isCanceled)
+                        WindowShow(window);
+                    break;
+                }
+                default:
+                {
+                    WindowShow(window);
+                    break;
+                }
+            }
+        }
+
+        private async Task<bool?> ShowModalWindowImplAsync(object ownerWindowKey, object windowKey, object viewModel)
+        {
+            var window = CreateWindow(ownerWindowKey, windowKey, viewModel);
+            switch (viewModel)
+            {
+                case IAsyncLoader asyncLoader:
+                {
+                    asyncLoader.LoadAsync().FireAndForget();
+                    return WindowShowDialog(window);
+                }
+                case IDelayedAsyncLoader delayedAsyncLoader:
+                {
+                    var loadingProgress = new LoadingProgress();
+                    var isCanceled = false;
+
+                    void LoadingProgressOnProgressUpdated(object sender, ProgressDataEventArgs e)
+                    {
+                        _pleaseWaitProvider.HandleProgress(e.Data);
+                    }
+
+                    void LoadingProgressOnProgressCanceled(object sender, LoadingCanceledEventArgs e)
+                    {
+                        isCanceled = true;
+                        _pleaseWaitProvider.HandleCanceled(e.Data);
+                    }
+
+                    loadingProgress.ProgressUpdated += LoadingProgressOnProgressUpdated;
+                    loadingProgress.ProgressCanceled += LoadingProgressOnProgressCanceled;
+                    _pleaseWaitProvider.Show();
+                    await delayedAsyncLoader.LoadAsync(loadingProgress);
+                    loadingProgress.ProgressUpdated -= LoadingProgressOnProgressUpdated;
+                    loadingProgress.ProgressCanceled -= LoadingProgressOnProgressCanceled;
+                    _pleaseWaitProvider.Close();
+                    return isCanceled ? null : WindowShowDialog(window);
+                }
+                default:
+                {
+                    return WindowShowDialog(window);
+                }
+            }
         }
 
         private Window CreateWindow(object ownerWindowKey, object windowKey, object viewModel)

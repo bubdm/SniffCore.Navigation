@@ -6,11 +6,11 @@ using System.Windows;
 using System.Windows.Controls;
 using Moq;
 using NUnit.Framework;
-using SniffCore.Dialogs;
-using SniffCore.MessageBoxes;
-using SniffCore.PleaseWaits;
-using SniffCore.Windows;
-using MessageBoxOptions = SniffCore.MessageBoxes.MessageBoxOptions;
+using SniffCore.Navigation.Dialogs;
+using SniffCore.Navigation.MessageBoxes;
+using SniffCore.Navigation.PleaseWaits;
+using SniffCore.Navigation.Windows;
+using MessageBoxOptions = SniffCore.Navigation.MessageBoxes.MessageBoxOptions;
 
 namespace SniffCore.Navigation.Tests
 {

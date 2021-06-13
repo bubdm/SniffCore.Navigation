@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using SniffCore.Navigation.External;
-using SniffCore.PleaseWaits;
+using SniffCore.Navigation.PleaseWaits;
 
 // ReSharper disable MemberCanBePrivate.Global
 
@@ -19,7 +19,7 @@ namespace SniffCore.Navigation
     ///     and Please Wait and more.
     /// </summary>
     /// <example>
-    /// <code lang="XAML">
+    ///     <code lang="XAML">
     /// <![CDATA[
     /// <Window xmlns:sniffcore="http://sniffcore.com">
     ///     <sniffcore:DisplayControl ViewModel="{Binding TheViewModel}">
@@ -32,18 +32,17 @@ namespace SniffCore.Navigation
     /// </Window>
     /// ]]>
     /// </code>
-    ///
-    /// <code lang="csharp">
+    ///     <code lang="csharp">
     /// <![CDATA[
     /// public class ViewModel : ObservableObject
     /// {
     ///     private INavigationService _navigationService;
-    ///
+    /// 
     ///     public ViewModel(INavigationService navigationService)
     ///     {
     ///         _navigationService = navigationService;
     ///     }
-    ///
+    /// 
     ///     public ObservableObject TheViewModel { get; private set; }
     ///     
     ///     public void Switch()

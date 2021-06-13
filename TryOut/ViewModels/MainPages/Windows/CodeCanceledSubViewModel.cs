@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using SniffCore;
 using SniffCore.Navigation;
-using SniffCore.PleaseWaits;
+using SniffCore.Navigation.PleaseWaits;
 
 namespace TryOut.ViewModels.MainPages.Windows
 {

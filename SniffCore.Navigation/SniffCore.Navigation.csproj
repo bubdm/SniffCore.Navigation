@@ -4,6 +4,7 @@
     <OutputType>Library</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
     <Authors>David Wendland</Authors>
     <Description>SniffCore.Navigation follows the idea of "It shall be async".
 It brings the possibility to show windows, user controls and dialogs in an MVVM environment.
@@ -19,13 +20,6 @@ Each VM can have an async ctor, cancel window opening, show loading progress and
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\netcoreapp3.1\SniffCore.Navigation.xml</DocumentationFile>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\SniffCore.Dialogs\SniffCore.Dialogs.csproj" />
-    <ProjectReference Include="..\SniffCore.MessageBoxes\SniffCore.MessageBoxes.csproj" />
-    <ProjectReference Include="..\SniffCore.PleaseWaits\SniffCore.PleaseWaits.csproj" />
-    <ProjectReference Include="..\SniffCore.Windows\SniffCore.Windows.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Include="..\Icon.png">

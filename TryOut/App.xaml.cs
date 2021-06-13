@@ -1,9 +1,9 @@
 ﻿using System.Windows;
-using SniffCore.Dialogs;
-using SniffCore.MessageBoxes;
 using SniffCore.Navigation;
-using SniffCore.PleaseWaits;
-using SniffCore.Windows;
+using SniffCore.Navigation.Dialogs;
+using SniffCore.Navigation.MessageBoxes;
+using SniffCore.Navigation.PleaseWaits;
+using SniffCore.Navigation.Windows;
 using TryOut.ViewModels;
 using TryOut.Views;
 using TryOut.Views.MainPages;

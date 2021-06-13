@@ -4,7 +4,7 @@
 //
 
 using System.Threading.Tasks;
-using SniffCore.PleaseWaits;
+using SniffCore.Navigation.PleaseWaits;
 
 namespace SniffCore.Navigation
 {

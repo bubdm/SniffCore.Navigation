@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Controls;
 using NUnit.Framework;
-using SniffCore.PleaseWaits;
+using SniffCore.Navigation.PleaseWaits;
 
 namespace SniffCore.Navigation.Tests
 {
