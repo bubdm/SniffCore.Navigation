@@ -4,6 +4,8 @@
 //
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using SniffCore.Navigation.PleaseWaits;
@@ -67,11 +69,19 @@ namespace SniffCore.Navigation
         public static readonly DependencyProperty PleaseWaitDataTemplateProperty =
             DependencyProperty.Register("PleaseWaitDataTemplate", typeof(DataTemplate), typeof(NavigationPresenter), new PropertyMetadata(null));
 
+        /// <summary>
+        ///     The DependencyProperty for the EnableUIPersistence property.
+        /// </summary>
+        public static readonly DependencyProperty EnableUIPersistenceProperty =
+            DependencyProperty.Register("EnableUIPersistence", typeof(bool), typeof(NavigationPresenter), new PropertyMetadata(false));
+
         internal static readonly DependencyProperty PleaseWaitProgressProperty =
             DependencyProperty.Register("PleaseWaitProgress", typeof(LoadingProgress), typeof(NavigationPresenter), new PropertyMetadata(OnPleaseWaitProgressChanged));
 
         internal static readonly DependencyProperty ProgressDataProperty =
             DependencyProperty.Register("ProgressData", typeof(ProgressData), typeof(NavigationPresenter), new PropertyMetadata(null));
+
+        private readonly Dictionary<WeakReference, FrameworkElement> _cache;
 
         static NavigationPresenter()
         {
@@ -109,6 +119,16 @@ namespace SniffCore.Navigation
         {
             get => (DataTemplate) GetValue(PleaseWaitDataTemplateProperty);
             set => SetValue(PleaseWaitDataTemplateProperty, value);
+        }
+
+        /// <summary>
+        ///     Sets or sets a value indicating if the UI element shall be persisted if the content changed.
+        ///     Enable this property invalidates <see cref="DisposeViewModel" />.
+        /// </summary>
+        public bool EnableUIPersistence
+        {
+            get => (bool) GetValue(EnableUIPersistenceProperty);
+            set => SetValue(EnableUIPersistenceProperty, value);
         }
 
         internal LoadingProgress PleaseWaitProgress
@@ -149,8 +169,29 @@ namespace SniffCore.Navigation
         private static void OnContentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var control = (NavigationPresenter) d;
-            if (control.DisposeViewModel && e.OldValue is FrameworkElement {DataContext: IDisposable disposable})
+            if (!control.EnableUIPersistence && control.DisposeViewModel && e.OldValue is FrameworkElement {DataContext: IDisposable disposable})
                 disposable.Dispose();
+        }
+
+        internal FrameworkElement GetCached(object viewModel)
+        {
+            var dead = _cache.Where(x => !x.Key.IsAlive);
+            foreach (var pair in dead)
+                _cache.Remove(pair.Key);
+
+            return _cache.FirstOrDefault(x => Equals(x.Key.Target, viewModel)).Value;
+        }
+
+        internal void StoreCached(object viewModel, FrameworkElement control)
+        {
+            if (!EnableUIPersistence)
+                return;
+
+            var dead = _cache.Where(x => !x.Key.IsAlive);
+            foreach (var pair in dead)
+                _cache.Remove(pair.Key);
+
+            _cache[new WeakReference(viewModel)] = control;
         }
     }
 }

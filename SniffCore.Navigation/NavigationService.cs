@@ -284,6 +284,15 @@ namespace SniffCore.Navigation
             var control = _windowProvider.GetNewControl(controlKey);
             control.DataContext = viewModel;
             var host = (NavigationPresenter) reference.Target;
+            var control = host.GetCached(viewModel);
+            if (control == null)
+            {
+                control = _windowProvider.GetNewControl(controlKey);
+                control.DataContext = viewModel;
+            }
+
+            host.StoreCached(viewModel, control);
+
             switch (viewModel)
             {
                 case IAsyncLoader asyncLoader:
