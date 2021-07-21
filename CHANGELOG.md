@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 Switch Animations
 
 ## [Unreleased]
+
+## [1.5.0] - 2021-07-21
 ### Added
 * UIDispatcher in Utils to have an easy access to the UIDispatcher in ViewModels
 * ColorPicker
