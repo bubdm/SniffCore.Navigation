@@ -89,6 +89,14 @@ namespace SniffCore.Navigation
         }
 
         /// <summary>
+        ///     Creates a new instance of <see cref="NavigationPresenter" />.
+        /// </summary>
+        public NavigationPresenter()
+        {
+            _cache = new Dictionary<WeakReference, FrameworkElement>();
+        }
+
+        /// <summary>
         ///     Defines if the viewmodel shall be disposed if they implement the IDisposable and the ViewModel changed.
         /// </summary>
         public bool DisposeViewModel

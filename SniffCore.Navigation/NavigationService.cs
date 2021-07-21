@@ -264,11 +264,11 @@ namespace SniffCore.Navigation
         /// <param name="hostId">The ID of the <see cref="NavigationPresenter" /> where to display the user control.</param>
         /// <param name="controlKey">The ID of the user control to create.</param>
         /// <param name="viewModel">The ViewModel which will be set into the DataContext of newly created user control.</param>
-        /// <returns>The task to await.</returns>
+        /// <returns>The task to await before or after the user control is shown. True if it was successfully (<see cref="IEditable"/>); otherwise false.</returns>
         /// <exception cref="ArgumentNullException">hostId is null.</exception>
         /// <exception cref="ArgumentNullException">controlKey is null.</exception>
         /// <exception cref="ArgumentNullException">viewModel is null.</exception>
-        public async Task ShowControlAsync(object hostId, object controlKey, object viewModel)
+        public async Task<bool> ShowControlAsync(object hostId, object controlKey, object viewModel)
         {
             if (hostId == null)
                 throw new ArgumentNullException(nameof(hostId));
@@ -281,9 +281,15 @@ namespace SniffCore.Navigation
             if (!_navigationPresenter.TryGetValue(hostId, out var reference))
                 throw new InvalidOperationException($"For the ID '{hostId}' no NavigationPresenter is registered");
 
-            var control = _windowProvider.GetNewControl(controlKey);
-            control.DataContext = viewModel;
             var host = (NavigationPresenter) reference.Target;
+
+            var canContinue = true;
+            if ((host.Content as FrameworkElement)?.DataContext is IEditable editable)
+                canContinue = await editable.TryLeave();
+
+            if (!canContinue)
+                return false;
+
             var control = host.GetCached(viewModel);
             if (control == null)
             {
@@ -317,6 +323,8 @@ namespace SniffCore.Navigation
                     break;
                 }
             }
+
+            return true;
         }
 
         /// <summary>

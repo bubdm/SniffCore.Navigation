@@ -71,7 +71,7 @@ namespace SniffCore.Navigation
         /// <param name="controlKey">The ID of the user control to create.</param>
         /// <param name="viewModel">The ViewModel which will be set into the DataContext of newly created user control.</param>
         /// <returns>The task to await.</returns>
-        Task ShowControlAsync(object hostId, object controlKey, object viewModel);
+        Task<bool> ShowControlAsync(object hostId, object controlKey, object viewModel);
 
         /// <summary>
         ///     Shows the message box.

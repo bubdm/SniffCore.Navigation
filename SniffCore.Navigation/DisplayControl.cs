@@ -80,6 +80,8 @@ namespace SniffCore.Navigation
         internal static readonly DependencyProperty PleaseWaitProgressProperty =
             DependencyProperty.Register("PleaseWaitProgress", typeof(LoadingProgress), typeof(DisplayControl), new PropertyMetadata(null));
 
+        private bool _skipContentUpdateOnce;
+
         static DisplayControl()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(DisplayControl), new FrameworkPropertyMetadata(typeof(DisplayControl)));
@@ -127,16 +129,38 @@ namespace SniffCore.Navigation
         private static void OnViewModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var control = (DisplayControl) d;
-            switch (e.NewValue)
+            if (control._skipContentUpdateOnce)
+            {
+                control._skipContentUpdateOnce = false;
+                return;
+            }
+
+            control.OnViewModelChanged(e.OldValue).FireAndForget();
+        }
+
+        private async Task OnViewModelChanged(object oldValue)
+        {
+            var canContinue = true;
+            if (Content is IEditable editable)
+                canContinue = await editable.TryLeave();
+
+            if (!canContinue)
+            {
+                _skipContentUpdateOnce = true;
+                SetCurrentValue(ViewModelProperty, oldValue);
+                return;
+            }
+
+            switch (ViewModel)
             {
                 case IAsyncLoader asyncLoader:
-                    control.DisplayAndLoadAsync(asyncLoader).FireAndForget();
+                    DisplayAndLoadAsync(asyncLoader).FireAndForget();
                     break;
                 case IDelayedAsyncLoader delayedAsyncLoader:
-                    control.LoadAndDisplayAsync(delayedAsyncLoader).FireAndForget();
+                    LoadAndDisplayAsync(delayedAsyncLoader).FireAndForget();
                     break;
                 default:
-                    control.Content = e.NewValue;
+                    Content = ViewModel;
                     break;
             }
         }
