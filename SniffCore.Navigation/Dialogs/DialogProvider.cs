@@ -199,5 +199,49 @@ namespace SniffCore.Navigation.Dialogs
 
             return true;
         }
+
+        /// <summary>
+        ///     Shows the font picker dialog.
+        /// </summary>
+        /// <param name="fontPickerData">The font picker dialog data.</param>
+        /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
+        /// <exception cref="ArgumentNullException">fontPickerData is null.</exception>
+        public bool Show(IFontPickerData fontPickerData)
+        {
+            if (fontPickerData == null)
+                throw new ArgumentNullException(nameof(fontPickerData));
+
+            var dialog = new FontDialog
+            {
+                AllowScriptChange = fontPickerData.AllowScriptChange,
+                AllowSimulations = fontPickerData.AllowSimulations,
+                AllowVectorFonts = fontPickerData.AllowVectorFonts,
+                AllowVerticalFonts = fontPickerData.AllowVerticalFonts,
+                Color = fontPickerData.Color,
+                FixedPitchOnly = fontPickerData.FixedPitchOnly,
+                Font = fontPickerData.Font,
+                FontMustExist = fontPickerData.FontMustExist,
+                MaxSize = fontPickerData.MaxSize,
+                MinSize = fontPickerData.MinSize,
+                ScriptsOnly = fontPickerData.ScriptsOnly,
+                ShowApply = fontPickerData.ShowApply,
+                ShowColor = fontPickerData.ShowColor,
+                ShowEffects = fontPickerData.ShowEffects
+            };
+
+            dialog.Apply += fontPickerData.OnApply;
+
+            var result = false;
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                fontPickerData.Font = dialog.Font;
+                fontPickerData.Color = dialog.Color;
+                result = true;
+            }
+
+            dialog.Apply -= fontPickerData.OnApply;
+
+            return result;
+        }
     }
 }

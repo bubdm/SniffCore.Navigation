@@ -16,12 +16,14 @@ namespace TryOut.ViewModels.MainPages
             OpenFileCommand = new DelegateCommand(OpenFile);
             BrowseFolderCommand = new DelegateCommand(BrowseFolder);
             ColorPickerCommand = new DelegateCommand(ColorPicker);
+            FontPickerCommand = new DelegateCommand(FontPicker);
         }
 
         public IDelegateCommand SaveFileCommand { get; }
         public IDelegateCommand OpenFileCommand { get; }
         public IDelegateCommand BrowseFolderCommand { get; }
         public IDelegateCommand ColorPickerCommand { get; }
+        public IDelegateCommand FontPickerCommand { get; }
 
         private void SaveFile()
         {
@@ -44,6 +46,12 @@ namespace TryOut.ViewModels.MainPages
         private void ColorPicker()
         {
             var data = new ColorPickerData();
+            _navigationService.ShowDialog(data);
+        }
+
+        private void FontPicker()
+        {
+            var data = new FontPickerData();
             _navigationService.ShowDialog(data);
         }
     }

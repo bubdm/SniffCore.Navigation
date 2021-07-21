@@ -12,6 +12,7 @@ Switch Animations
 ### Added
 * UIDispatcher in Utils to have an easy access to the UIDispatcher in ViewModels
 * ColorPicker
+* FontPicker
 
 ## [1.0.0] - 2021-06-13
 ### Added

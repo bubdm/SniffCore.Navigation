@@ -529,6 +529,21 @@ namespace SniffCore.Navigation
 
             return _dialogProvider.Show(colorPickerData);
         }
+
+        /// <summary>
+        ///     Shows the font picker dialog.
+        /// </summary>
+        /// <param name="fontPickerData">The font picker dialog data.</param>
+        /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
+        /// <exception cref="ArgumentNullException">fontPickerData is null.</exception>
+        public bool ShowDialog(IFontPickerData fontPickerData)
+        {
+            if (fontPickerData == null)
+                throw new ArgumentNullException(nameof(fontPickerData));
+
+            return _dialogProvider.Show(fontPickerData);
+        }
+
         private async Task ShowWindowImplAsync(object ownerWindowKey, object windowKey, object viewModel)
         {
             var window = CreateWindow(ownerWindowKey, windowKey, viewModel);

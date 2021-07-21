@@ -172,5 +172,12 @@ namespace SniffCore.Navigation
         /// <param name="colorPickerData">The color picker dialog data.</param>
         /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
         bool ShowDialog(IColorPickerData colorPickerData);
+
+        /// <summary>
+        ///     Shows the font picker dialog.
+        /// </summary>
+        /// <param name="fontPickerData">The font picker dialog data.</param>
+        /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
+        bool ShowDialog(IFontPickerData fontPickerData);
     }
 }
