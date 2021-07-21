@@ -4,7 +4,6 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Ideas/Upcoming]
-ColorPicker
 Pending changes
 NavigationPresenter UI element caching
 Switch Animations
@@ -12,6 +11,7 @@ Switch Animations
 ## [Unreleased]
 ### Added
 * UIDispatcher in Utils to have an easy access to the UIDispatcher in ViewModels
+* ColorPicker
 
 ## [1.0.0] - 2021-06-13
 ### Added

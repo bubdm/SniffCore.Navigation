@@ -516,6 +516,19 @@ namespace SniffCore.Navigation
             return _dialogProvider.Show(browseFolderData);
         }
 
+        /// <summary>
+        ///     Shows the color picker dialog.
+        /// </summary>
+        /// <param name="colorPickerData">The color picker dialog data.</param>
+        /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
+        /// <exception cref="ArgumentNullException">colorPickerData is null.</exception>
+        public bool ShowDialog(IColorPickerData colorPickerData)
+        {
+            if (colorPickerData == null)
+                throw new ArgumentNullException(nameof(colorPickerData));
+
+            return _dialogProvider.Show(colorPickerData);
+        }
         private async Task ShowWindowImplAsync(object ownerWindowKey, object windowKey, object viewModel)
         {
             var window = CreateWindow(ownerWindowKey, windowKey, viewModel);

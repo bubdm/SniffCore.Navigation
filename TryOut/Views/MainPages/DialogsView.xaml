@@ -13,7 +13,8 @@
     <StackPanel Orientation="Horizontal" Margin="20" HorizontalAlignment="Left" VerticalAlignment="Top">
         <Controls:BigButton Label="Save File" Command="{Binding SaveFileCommand}" Margin="0,0,10,0" />
         <Controls:BigButton Label="Open File" Command="{Binding OpenFileCommand}" Margin="0,0,10,0" />
-        <Controls:BigButton Label="Browse Folder" Command="{Binding BrowseFolderCommand}" />
+        <Controls:BigButton Label="Browse Folder" Command="{Binding BrowseFolderCommand}" Margin="0,0,10,0" />
+        <Controls:BigButton Label="Color Picker" Command="{Binding ColorPickerCommand}" Margin="0,0,10,0" />
     </StackPanel>
 
 </UserControl>

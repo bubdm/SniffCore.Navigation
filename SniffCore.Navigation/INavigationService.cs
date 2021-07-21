@@ -165,5 +165,12 @@ namespace SniffCore.Navigation
         /// <param name="browseFolderData">The browse folder dialog data.</param>
         /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
         bool ShowDialog(IBrowseFolderData browseFolderData);
+
+        /// <summary>
+        ///     Shows the color picker dialog.
+        /// </summary>
+        /// <param name="colorPickerData">The color picker dialog data.</param>
+        /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
+        bool ShowDialog(IColorPickerData colorPickerData);
     }
 }

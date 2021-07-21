@@ -170,5 +170,34 @@ namespace SniffCore.Navigation.Dialogs
             browseFolderData.SelectedPath = dialog.SelectedPath;
             return true;
         }
+
+        /// <summary>
+        ///     Shows the color picker dialog.
+        /// </summary>
+        /// <param name="colorPickerData">The color picker dialog data.</param>
+        /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
+        /// <exception cref="ArgumentNullException">colorPickerData is null.</exception>
+        public bool Show(IColorPickerData colorPickerData)
+        {
+            if (colorPickerData == null)
+                throw new ArgumentNullException(nameof(colorPickerData));
+
+            var dialog = new ColorDialog
+            {
+                AllowFullOpen = colorPickerData.AllowFullOpen,
+                AnyColor = colorPickerData.AnyColor,
+                Color = colorPickerData.Color,
+                CustomColors = colorPickerData.CustomColors,
+                FullOpen = colorPickerData.FullOpen,
+                SolidColorOnly = colorPickerData.SolidColorOnly
+            };
+
+            if (dialog.ShowDialog() != DialogResult.OK)
+                return false;
+
+            colorPickerData.Color = dialog.Color;
+
+            return true;
+        }
     }
 }
