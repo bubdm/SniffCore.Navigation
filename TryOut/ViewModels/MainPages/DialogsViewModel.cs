@@ -28,31 +28,31 @@ namespace TryOut.ViewModels.MainPages
         private void SaveFile()
         {
             var data = new SaveFileData();
-            _navigationService.ShowDialog(data);
+            _navigationService.ShowDialog("MainView", data);
         }
 
         private void OpenFile()
         {
             var data = new OpenFileData();
-            _navigationService.ShowDialog(data);
+            _navigationService.ShowDialog("MainView", data);
         }
 
         private void BrowseFolder()
         {
             var data = new BrowseFolderData();
-            _navigationService.ShowDialog(data);
+            _navigationService.ShowDialog("MainView", data);
         }
 
         private void ColorPicker()
         {
             var data = new ColorPickerData();
-            _navigationService.ShowDialog(data);
+            _navigationService.ShowDialog("MainView", data);
         }
 
         private void FontPicker()
         {
             var data = new FontPickerData();
-            _navigationService.ShowDialog(data);
+            _navigationService.ShowDialog("MainView", data);
         }
     }
 }

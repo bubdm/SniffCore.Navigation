@@ -3,6 +3,8 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 
+using System.Windows;
+
 namespace SniffCore.Navigation.Dialogs
 {
     /// <summary>
@@ -18,11 +20,27 @@ namespace SniffCore.Navigation.Dialogs
         bool Show(IOpenFileData openFileData);
 
         /// <summary>
+        ///     Shows the open file dialog.
+        /// </summary>
+        /// <param name="owner">The owner window of the dialog.</param>
+        /// <param name="openFileData">The open file dialog data.</param>
+        /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
+        bool Show(Window owner, IOpenFileData openFileData);
+
+        /// <summary>
         ///     Shows the save file dialog.
         /// </summary>
         /// <param name="saveFileData">The save file dialog data.</param>
         /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
         bool Show(ISaveFileData saveFileData);
+
+        /// <summary>
+        ///     Shows the save file dialog.
+        /// </summary>
+        /// <param name="owner">The owner window of the dialog.</param>
+        /// <param name="saveFileData">The save file dialog data.</param>
+        /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
+        bool Show(Window owner, ISaveFileData saveFileData);
 
         /// <summary>
         ///     Shows the browse folder dialog.
@@ -32,6 +50,14 @@ namespace SniffCore.Navigation.Dialogs
         bool Show(IBrowseFolderData browseFolderData);
 
         /// <summary>
+        ///     Shows the browse folder dialog.
+        /// </summary>
+        /// <param name="owner">The owner window of the dialog.</param>
+        /// <param name="browseFolderData">The browse folder dialog data.</param>
+        /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
+        bool Show(Window owner, IBrowseFolderData browseFolderData);
+
+        /// <summary>
         ///     Shows the color picker dialog.
         /// </summary>
         /// <param name="colorPickerData">The color picker dialog data.</param>
@@ -39,10 +65,26 @@ namespace SniffCore.Navigation.Dialogs
         bool Show(IColorPickerData colorPickerData);
 
         /// <summary>
+        ///     Shows the color picker dialog.
+        /// </summary>
+        /// <param name="owner">The owner window of the dialog.</param>
+        /// <param name="colorPickerData">The color picker dialog data.</param>
+        /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
+        bool Show(Window owner, IColorPickerData colorPickerData);
+
+        /// <summary>
         ///     Shows the font picker dialog.
         /// </summary>
         /// <param name="fontPickerData">The font picker dialog data.</param>
         /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
         bool Show(IFontPickerData fontPickerData);
+
+        /// <summary>
+        ///     Shows the font picker dialog.
+        /// </summary>
+        /// <param name="owner">The owner window of the dialog.</param>
+        /// <param name="fontPickerData">The font picker dialog data.</param>
+        /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
+        bool Show(Window owner, IFontPickerData fontPickerData);
     }
 }

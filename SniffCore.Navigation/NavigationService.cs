@@ -349,6 +349,7 @@ namespace SniffCore.Navigation
         /// <returns>The result of the message box after closing.</returns>
         /// <exception cref="ArgumentNullException">ownerWindowKey is null.</exception>
         /// <exception cref="ArgumentNullException">messageBoxText is null.</exception>
+        /// <exception cref="InvalidOperationException">There is no open window with the given owner key.</exception>
         public MessageBoxResult ShowMessageBox(object ownerWindowKey, string messageBoxText)
         {
             if (ownerWindowKey == null)
@@ -387,6 +388,7 @@ namespace SniffCore.Navigation
         /// <exception cref="ArgumentNullException">ownerWindowKey is null.</exception>
         /// <exception cref="ArgumentNullException">messageBoxText is null.</exception>
         /// <exception cref="ArgumentNullException">caption is null.</exception>
+        /// <exception cref="InvalidOperationException">There is no open window with the given owner key.</exception>
         public MessageBoxResult ShowMessageBox(object ownerWindowKey, string messageBoxText, string caption)
         {
             if (ownerWindowKey == null)
@@ -429,6 +431,7 @@ namespace SniffCore.Navigation
         /// <exception cref="ArgumentNullException">ownerWindowKey is null.</exception>
         /// <exception cref="ArgumentNullException">messageBoxText is null.</exception>
         /// <exception cref="ArgumentNullException">caption is null.</exception>
+        /// <exception cref="InvalidOperationException">There is no open window with the given owner key.</exception>
         public MessageBoxResult ShowMessageBox(object ownerWindowKey, string messageBoxText, string caption, MessageBoxButton button)
         {
             if (ownerWindowKey == null)
@@ -477,6 +480,7 @@ namespace SniffCore.Navigation
         /// <exception cref="ArgumentNullException">messageBoxText is null.</exception>
         /// <exception cref="ArgumentNullException">caption is null.</exception>
         /// <exception cref="ArgumentNullException">options is null.</exception>
+        /// <exception cref="InvalidOperationException">There is no open window with the given owner key.</exception>
         public MessageBoxResult ShowMessageBox(object ownerWindowKey, string messageBoxText, string caption, MessageBoxButton button, IMessageBoxOptions options)
         {
             if (ownerWindowKey == null)
@@ -506,6 +510,25 @@ namespace SniffCore.Navigation
         }
 
         /// <summary>
+        ///     Shows the open file dialog.
+        /// </summary>
+        /// <param name="ownerWindowKey">The owner window key of the dialog.</param>
+        /// <param name="openFileData">The open file dialog data.</param>
+        /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
+        /// <exception cref="ArgumentNullException">ownerWindowKey is null.</exception>
+        /// <exception cref="ArgumentNullException">openFileData is null.</exception>
+        /// <exception cref="InvalidOperationException">There is no open window with the given owner key.</exception>
+        public bool ShowDialog(object ownerWindowKey, IOpenFileData openFileData)
+        {
+            if (ownerWindowKey == null)
+                throw new ArgumentNullException(nameof(ownerWindowKey));
+            if (openFileData == null)
+                throw new ArgumentNullException(nameof(openFileData));
+
+            return _dialogProvider.Show(_windowProvider.GetOpenWindow(ownerWindowKey), openFileData);
+        }
+
+        /// <summary>
         ///     Shows the save file dialog.
         /// </summary>
         /// <param name="saveFileData">The save file dialog data.</param>
@@ -517,6 +540,25 @@ namespace SniffCore.Navigation
                 throw new ArgumentNullException(nameof(saveFileData));
 
             return _dialogProvider.Show(saveFileData);
+        }
+
+        /// <summary>
+        ///     Shows the save file dialog.
+        /// </summary>
+        /// <param name="ownerWindowKey">The owner window key of the dialog.</param>
+        /// <param name="saveFileData">The save file dialog data.</param>
+        /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
+        /// <exception cref="ArgumentNullException">ownerWindowKey is null.</exception>
+        /// <exception cref="ArgumentNullException">saveFileData is null.</exception>
+        /// <exception cref="InvalidOperationException">There is no open window with the given owner key.</exception>
+        public bool ShowDialog(object ownerWindowKey, ISaveFileData saveFileData)
+        {
+            if (ownerWindowKey == null)
+                throw new ArgumentNullException(nameof(ownerWindowKey));
+            if (saveFileData == null)
+                throw new ArgumentNullException(nameof(saveFileData));
+
+            return _dialogProvider.Show(_windowProvider.GetOpenWindow(ownerWindowKey), saveFileData);
         }
 
         /// <summary>
@@ -534,6 +576,25 @@ namespace SniffCore.Navigation
         }
 
         /// <summary>
+        ///     Shows the browse folder dialog.
+        /// </summary>
+        /// <param name="ownerWindowKey">The owner window key of the dialog.</param>
+        /// <param name="browseFolderData">The browse folder dialog data.</param>
+        /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
+        /// <exception cref="ArgumentNullException">ownerWindowKey is null.</exception>
+        /// <exception cref="ArgumentNullException">browseFolderData is null.</exception>
+        /// <exception cref="InvalidOperationException">There is no open window with the given owner key.</exception>
+        public bool ShowDialog(object ownerWindowKey, IBrowseFolderData browseFolderData)
+        {
+            if (ownerWindowKey == null)
+                throw new ArgumentNullException(nameof(ownerWindowKey));
+            if (browseFolderData == null)
+                throw new ArgumentNullException(nameof(browseFolderData));
+
+            return _dialogProvider.Show(_windowProvider.GetOpenWindow(ownerWindowKey), browseFolderData);
+        }
+
+        /// <summary>
         ///     Shows the color picker dialog.
         /// </summary>
         /// <param name="colorPickerData">The color picker dialog data.</param>
@@ -548,6 +609,25 @@ namespace SniffCore.Navigation
         }
 
         /// <summary>
+        ///     Shows the color picker dialog.
+        /// </summary>
+        /// <param name="ownerWindowKey">The owner window key of the dialog.</param>
+        /// <param name="colorPickerData">The color picker dialog data.</param>
+        /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
+        /// <exception cref="ArgumentNullException">ownerWindowKey is null.</exception>
+        /// <exception cref="ArgumentNullException">colorPickerData is null.</exception>
+        /// <exception cref="InvalidOperationException">There is no open window with the given owner key.</exception>
+        public bool ShowDialog(object ownerWindowKey, IColorPickerData colorPickerData)
+        {
+            if (ownerWindowKey == null)
+                throw new ArgumentNullException(nameof(ownerWindowKey));
+            if (colorPickerData == null)
+                throw new ArgumentNullException(nameof(colorPickerData));
+
+            return _dialogProvider.Show(_windowProvider.GetOpenWindow(ownerWindowKey), colorPickerData);
+        }
+
+        /// <summary>
         ///     Shows the font picker dialog.
         /// </summary>
         /// <param name="fontPickerData">The font picker dialog data.</param>
@@ -559,6 +639,25 @@ namespace SniffCore.Navigation
                 throw new ArgumentNullException(nameof(fontPickerData));
 
             return _dialogProvider.Show(fontPickerData);
+        }
+
+        /// <summary>
+        ///     Shows the font picker dialog.
+        /// </summary>
+        /// <param name="ownerWindowKey">The owner window key of the dialog.</param>
+        /// <param name="fontPickerData">The font picker dialog data.</param>
+        /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
+        /// <exception cref="ArgumentNullException">ownerWindowKey is null.</exception>
+        /// <exception cref="ArgumentNullException">fontPickerData is null.</exception>
+        /// <exception cref="InvalidOperationException">There is no open window with the given owner key.</exception>
+        public bool ShowDialog(object ownerWindowKey, IFontPickerData fontPickerData)
+        {
+            if (ownerWindowKey == null)
+                throw new ArgumentNullException(nameof(ownerWindowKey));
+            if (fontPickerData == null)
+                throw new ArgumentNullException(nameof(fontPickerData));
+
+            return _dialogProvider.Show(_windowProvider.GetOpenWindow(ownerWindowKey), fontPickerData);
         }
 
         private async Task ShowWindowImplAsync(object ownerWindowKey, object windowKey, object viewModel)

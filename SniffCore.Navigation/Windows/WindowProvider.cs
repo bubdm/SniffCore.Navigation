@@ -104,6 +104,7 @@ namespace SniffCore.Navigation.Windows
         /// <param name="windowKey">The key of the window to return.</param>
         /// <returns>The open window know by the key.</returns>
         /// <exception cref="ArgumentNullException">windowKey is null.</exception>
+        /// <exception cref="InvalidOperationException">There is no open window with the given key.</exception>
         public Window GetOpenWindow(object windowKey)
         {
             if (windowKey == null)

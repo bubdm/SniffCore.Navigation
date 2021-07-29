@@ -4,6 +4,7 @@
 //
 
 using System;
+using System.Windows;
 using System.Windows.Forms;
 
 // ReSharper disable ClassNeverInstantiated.Global
@@ -84,6 +85,157 @@ namespace SniffCore.Navigation.Dialogs
             if (openFileData == null)
                 throw new ArgumentNullException(nameof(openFileData));
 
+            return ShowImpl(null, openFileData);
+        }
+
+        /// <summary>
+        ///     Shows the open file dialog.
+        /// </summary>
+        /// <param name="owner">The owner window of the dialog.</param>
+        /// <param name="openFileData">The open file dialog data.</param>
+        /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
+        /// <exception cref="ArgumentNullException">owner is null.</exception>
+        /// <exception cref="ArgumentNullException">openFileData is null.</exception>
+        public bool Show(Window owner, IOpenFileData openFileData)
+        {
+            if (owner == null)
+                throw new ArgumentNullException(nameof(owner));
+            if (openFileData == null)
+                throw new ArgumentNullException(nameof(openFileData));
+
+            return ShowImpl(owner, openFileData);
+        }
+
+        /// <summary>
+        ///     Shows the save file dialog.
+        /// </summary>
+        /// <param name="saveFileData">The save file dialog data.</param>
+        /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
+        /// <exception cref="ArgumentNullException">saveFileData is null.</exception>
+        public bool Show(ISaveFileData saveFileData)
+        {
+            if (saveFileData == null)
+                throw new ArgumentNullException(nameof(saveFileData));
+
+            return ShowImpl(null, saveFileData);
+        }
+
+        /// <summary>
+        ///     Shows the save file dialog.
+        /// </summary>
+        /// <param name="owner">The owner window of the dialog.</param>
+        /// <param name="saveFileData">The save file dialog data.</param>
+        /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
+        /// <exception cref="ArgumentNullException">owner is null.</exception>
+        /// <exception cref="ArgumentNullException">saveFileData is null.</exception>
+        public bool Show(Window owner, ISaveFileData saveFileData)
+        {
+            if (owner == null)
+                throw new ArgumentNullException(nameof(owner));
+            if (saveFileData == null)
+                throw new ArgumentNullException(nameof(saveFileData));
+
+            return ShowImpl(owner, saveFileData);
+        }
+
+        /// <summary>
+        ///     Shows the browse folder dialog.
+        /// </summary>
+        /// <param name="browseFolderData">The browse folder dialog data.</param>
+        /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
+        /// <exception cref="ArgumentNullException">browseFolderData is null.</exception>
+        public bool Show(IBrowseFolderData browseFolderData)
+        {
+            if (browseFolderData == null)
+                throw new ArgumentNullException(nameof(browseFolderData));
+
+            return ShowImpl(null, browseFolderData);
+        }
+
+        /// <summary>
+        ///     Shows the browse folder dialog.
+        /// </summary>
+        /// <param name="owner">The owner window of the dialog.</param>
+        /// <param name="browseFolderData">The browse folder dialog data.</param>
+        /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
+        /// <exception cref="ArgumentNullException">owner is null.</exception>
+        /// <exception cref="ArgumentNullException">browseFolderData is null.</exception>
+        public bool Show(Window owner, IBrowseFolderData browseFolderData)
+        {
+            if (owner == null)
+                throw new ArgumentNullException(nameof(owner));
+            if (browseFolderData == null)
+                throw new ArgumentNullException(nameof(browseFolderData));
+
+            return ShowImpl(owner, browseFolderData);
+        }
+
+        /// <summary>
+        ///     Shows the color picker dialog.
+        /// </summary>
+        /// <param name="colorPickerData">The color picker dialog data.</param>
+        /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
+        /// <exception cref="ArgumentNullException">colorPickerData is null.</exception>
+        public bool Show(IColorPickerData colorPickerData)
+        {
+            if (colorPickerData == null)
+                throw new ArgumentNullException(nameof(colorPickerData));
+
+            return ShowImpl(null, colorPickerData);
+        }
+
+        /// <summary>
+        ///     Shows the color picker dialog.
+        /// </summary>
+        /// <param name="owner">The owner window of the dialog.</param>
+        /// <param name="colorPickerData">The color picker dialog data.</param>
+        /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
+        /// <exception cref="ArgumentNullException">owner is null.</exception>
+        /// <exception cref="ArgumentNullException">colorPickerData is null.</exception>
+        public bool Show(Window owner, IColorPickerData colorPickerData)
+        {
+            if (owner == null)
+                throw new ArgumentNullException(nameof(owner));
+            if (colorPickerData == null)
+                throw new ArgumentNullException(nameof(colorPickerData));
+
+            return ShowImpl(owner, colorPickerData);
+        }
+
+        /// <summary>
+        ///     Shows the font picker dialog.
+        /// </summary>
+        /// <param name="fontPickerData">The font picker dialog data.</param>
+        /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
+        /// <exception cref="ArgumentNullException">fontPickerData is null.</exception>
+        public bool Show(IFontPickerData fontPickerData)
+        {
+            if (fontPickerData == null)
+                throw new ArgumentNullException(nameof(fontPickerData));
+
+            return ShowImpl(null, fontPickerData);
+        }
+
+        /// <summary>
+        ///     Shows the font picker dialog.
+        /// </summary>
+        /// <param name="owner">The owner window of the dialog.</param>
+        /// <param name="fontPickerData">The font picker dialog data.</param>
+        /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
+        /// <exception cref="ArgumentNullException">owner is null.</exception>
+        /// <exception cref="ArgumentNullException">fontPickerData is null.</exception>
+        public bool Show(Window owner, IFontPickerData fontPickerData)
+        {
+            if (owner == null)
+                throw new ArgumentNullException(nameof(owner));
+            if (fontPickerData == null)
+                throw new ArgumentNullException(nameof(fontPickerData));
+
+            return ShowImpl(owner, fontPickerData);
+        }
+
+        private bool ShowImpl(Window owner, IOpenFileData openFileData)
+        {
             var dialog = new OpenFileDialog
             {
                 CheckFileExists = openFileData.CheckFileExists,
@@ -98,27 +250,16 @@ namespace SniffCore.Navigation.Dialogs
                 ValidateNames = openFileData.ValidateNames
             };
 
-            if (dialog.ShowDialog() != DialogResult.OK)
-                return false;
-
+            var result = ShowDialog(owner, dialog);
             openFileData.FileName = dialog.FileName;
             openFileData.FileNames = dialog.FileNames;
             openFileData.SafeFileName = dialog.SafeFileName;
             openFileData.SafeFileNames = dialog.SafeFileNames;
-            return true;
+            return result;
         }
 
-        /// <summary>
-        ///     Shows the save file dialog.
-        /// </summary>
-        /// <param name="saveFileData">The save file dialog data.</param>
-        /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
-        /// <exception cref="ArgumentNullException">saveFileData is null.</exception>
-        public bool Show(ISaveFileData saveFileData)
+        private bool ShowImpl(Window owner, ISaveFileData saveFileData)
         {
-            if (saveFileData == null)
-                throw new ArgumentNullException(nameof(saveFileData));
-
             var dialog = new SaveFileDialog
             {
                 CheckFileExists = saveFileData.CheckFileExists,
@@ -134,25 +275,14 @@ namespace SniffCore.Navigation.Dialogs
                 ValidateNames = saveFileData.ValidateNames
             };
 
-            if (dialog.ShowDialog() != DialogResult.OK)
-                return false;
-
+            var result = ShowDialog(owner, dialog);
             saveFileData.FileName = dialog.FileName;
             saveFileData.FileNames = dialog.FileNames;
-            return true;
+            return result;
         }
 
-        /// <summary>
-        ///     Shows the browse folder dialog.
-        /// </summary>
-        /// <param name="browseFolderData">The browse folder dialog data.</param>
-        /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
-        /// <exception cref="ArgumentNullException">browseFolderData is null.</exception>
-        public bool Show(IBrowseFolderData browseFolderData)
+        private bool ShowImpl(Window owner, IBrowseFolderData browseFolderData)
         {
-            if (browseFolderData == null)
-                throw new ArgumentNullException(nameof(browseFolderData));
-
             var dialog = new FolderBrowserDialog
             {
                 ShowNewFolderButton = browseFolderData.ShowNewFolderButton
@@ -164,24 +294,13 @@ namespace SniffCore.Navigation.Dialogs
             if (!string.IsNullOrWhiteSpace(browseFolderData.SelectedPath))
                 dialog.SelectedPath = browseFolderData.Description;
 
-            if (dialog.ShowDialog() != DialogResult.OK)
-                return false;
-
+            var result = ShowDialog(owner, dialog);
             browseFolderData.SelectedPath = dialog.SelectedPath;
-            return true;
+            return result;
         }
 
-        /// <summary>
-        ///     Shows the color picker dialog.
-        /// </summary>
-        /// <param name="colorPickerData">The color picker dialog data.</param>
-        /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
-        /// <exception cref="ArgumentNullException">colorPickerData is null.</exception>
-        public bool Show(IColorPickerData colorPickerData)
+        private bool ShowImpl(Window owner, IColorPickerData colorPickerData)
         {
-            if (colorPickerData == null)
-                throw new ArgumentNullException(nameof(colorPickerData));
-
             var dialog = new ColorDialog
             {
                 AllowFullOpen = colorPickerData.AllowFullOpen,
@@ -192,25 +311,13 @@ namespace SniffCore.Navigation.Dialogs
                 SolidColorOnly = colorPickerData.SolidColorOnly
             };
 
-            if (dialog.ShowDialog() != DialogResult.OK)
-                return false;
-
+            var result = ShowDialog(owner, dialog);
             colorPickerData.Color = dialog.Color;
-
-            return true;
+            return result;
         }
 
-        /// <summary>
-        ///     Shows the font picker dialog.
-        /// </summary>
-        /// <param name="fontPickerData">The font picker dialog data.</param>
-        /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
-        /// <exception cref="ArgumentNullException">fontPickerData is null.</exception>
-        public bool Show(IFontPickerData fontPickerData)
+        private bool ShowImpl(Window owner, IFontPickerData fontPickerData)
         {
-            if (fontPickerData == null)
-                throw new ArgumentNullException(nameof(fontPickerData));
-
             var dialog = new FontDialog
             {
                 AllowScriptChange = fontPickerData.AllowScriptChange,
@@ -230,18 +337,20 @@ namespace SniffCore.Navigation.Dialogs
             };
 
             dialog.Apply += fontPickerData.OnApply;
-
-            var result = false;
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-                fontPickerData.Font = dialog.Font;
-                fontPickerData.Color = dialog.Color;
-                result = true;
-            }
-
+            var result = ShowDialog(owner, dialog);
+            fontPickerData.Font = dialog.Font;
+            fontPickerData.Color = dialog.Color;
             dialog.Apply -= fontPickerData.OnApply;
-
             return result;
+        }
+
+        private bool ShowDialog(Window owner, CommonDialog dialog)
+        {
+            if (owner == null)
+                return dialog.ShowDialog() == DialogResult.OK;
+
+            var window = new WindowWrapper(owner);
+            return dialog.ShowDialog(window) == DialogResult.OK;
         }
     }
 }
