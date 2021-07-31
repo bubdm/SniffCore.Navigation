@@ -9,8 +9,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
-// ReSharper disable PossibleNullReferenceException
-
 namespace SniffCore.Navigation.Windows
 {
     /// <summary>

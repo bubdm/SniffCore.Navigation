@@ -15,10 +15,6 @@ using SniffCore.Navigation.MessageBoxes;
 using SniffCore.Navigation.PleaseWaits;
 using SniffCore.Navigation.Windows;
 
-// ReSharper disable InconsistentNaming
-// ReSharper disable ClassNeverInstantiated.Global
-// ReSharper disable PossibleNullReferenceException
-
 namespace SniffCore.Navigation
 {
     /// <summary>

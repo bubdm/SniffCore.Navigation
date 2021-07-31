@@ -6,9 +6,6 @@
 using System;
 using System.Windows;
 
-// ReSharper disable ConvertIfStatementToReturnStatement
-// ReSharper disable ClassNeverInstantiated.Global
-
 namespace SniffCore.Navigation.MessageBoxes
 {
     /// <summary>

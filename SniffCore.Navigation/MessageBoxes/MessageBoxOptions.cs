@@ -5,8 +5,6 @@
 
 using System.Windows;
 
-// ReSharper disable IntroduceOptionalParameters.Global
-
 namespace SniffCore.Navigation.MessageBoxes
 {
     /// <summary>

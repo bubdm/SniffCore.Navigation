@@ -3,9 +3,6 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
-
 namespace SniffCore.Navigation.PleaseWaits
 {
     /// <summary>

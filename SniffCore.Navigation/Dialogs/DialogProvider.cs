@@ -7,8 +7,6 @@ using System;
 using System.Windows;
 using System.Windows.Forms;
 
-// ReSharper disable ClassNeverInstantiated.Global
-
 namespace SniffCore.Navigation.Dialogs
 {
     /// <summary>

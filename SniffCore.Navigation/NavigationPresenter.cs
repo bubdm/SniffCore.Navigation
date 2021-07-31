@@ -10,8 +10,6 @@ using System.Windows;
 using System.Windows.Controls;
 using SniffCore.Navigation.PleaseWaits;
 
-// ReSharper disable MemberCanBePrivate.Global
-
 namespace SniffCore.Navigation
 {
     /// <summary>
