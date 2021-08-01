@@ -5,10 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Ideas/Upcoming]
 * Switch Animations
-* Register a window as main window for optional fallback
 
 ## [Unreleased]
 * Added Owner overloads for the system dialogs
+* Register a window as main window for optional fallback for modal windows, dialogs and messageboxes
 
 ## [1.5.0] - 2021-07-21
 ### Added

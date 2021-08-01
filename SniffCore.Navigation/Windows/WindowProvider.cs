@@ -62,6 +62,7 @@ namespace SniffCore.Navigation.Windows
         private readonly Dictionary<object, Type> _controls;
         private readonly Dictionary<Guid, Tuple<object, Window>> _openWindows;
         private readonly Dictionary<object, Type> _windows;
+        private object _mainWindowKey;
 
         /// <summary>
         ///     Creates a new instance of <see cref="WindowProvider" />.
@@ -108,11 +109,31 @@ namespace SniffCore.Navigation.Windows
             if (windowKey == null)
                 throw new ArgumentNullException(nameof(windowKey));
 
-            var (_, value) = _openWindows.FirstOrDefault(x => Equals(x.Value.Item1, windowKey));
-            if (value == null)
+            var window = TryGetOpenWindow(windowKey);
+            if (window == null)
                 throw new InvalidOperationException($@"There is no open window with the window key '{windowKey}'");
 
+            return window;
+        }
+
+        /// <summary>
+        ///     Returns the open window by the key.
+        /// </summary>
+        /// <param name="windowKey">The key of the window to return.</param>
+        /// <returns>The open window know by the key if exist; otherwise null.</returns>
+        public Window TryGetOpenWindow(object windowKey)
+        {
+            var (_, value) = _openWindows.FirstOrDefault(x => Equals(x.Value.Item1, windowKey));
             return value.Item2;
+        }
+
+        /// <summary>
+        ///     Returns the main window.
+        /// </summary>
+        /// <returns>The main window if registered and open; otherwise null.</returns>
+        public Window GetMainWindow()
+        {
+            return _mainWindowKey == null ? null : TryGetOpenWindow(_mainWindowKey);
         }
 
         /// <summary>
@@ -146,11 +167,15 @@ namespace SniffCore.Navigation.Windows
         /// </summary>
         /// <typeparam name="TWindow">The type of the window to register.</typeparam>
         /// <param name="windowKey">The window key.</param>
+        /// <param name="isMainWindow">Registers the window key additionally as the main window.</param>
         /// <exception cref="ArgumentNullException">windowKey is null.</exception>
-        public void RegisterWindow<TWindow>(object windowKey) where TWindow : Window
+        public void RegisterWindow<TWindow>(object windowKey, bool isMainWindow = false) where TWindow : Window
         {
             if (windowKey == null)
                 throw new ArgumentNullException(nameof(windowKey));
+
+            if (isMainWindow)
+                _mainWindowKey = windowKey;
 
             _windows[windowKey] = typeof(TWindow);
         }

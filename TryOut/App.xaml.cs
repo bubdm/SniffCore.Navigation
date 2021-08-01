@@ -30,7 +30,7 @@ namespace TryOut
             var windowProvider = (WindowProvider) _unityContainer.Resolve<IWindowProvider>();
             var navigationService = _unityContainer.Resolve<INavigationService>();
 
-            windowProvider.RegisterWindow<MainView>("MainView");
+            windowProvider.RegisterWindow<MainView>("MainView", true);
             windowProvider.RegisterWindow<SubView>("SubView");
 
             windowProvider.RegisterControl<DialogsView>("DialogsView");

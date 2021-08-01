@@ -28,19 +28,19 @@ namespace TryOut.ViewModels.MainPages
         private void SaveFile()
         {
             var data = new SaveFileData();
-            _navigationService.ShowDialog("MainView", data);
+            _navigationService.ShowDialog(data);
         }
 
         private void OpenFile()
         {
             var data = new OpenFileData();
-            _navigationService.ShowDialog("MainView", data);
+            _navigationService.ShowDialog(data);
         }
 
         private void BrowseFolder()
         {
             var data = new BrowseFolderData();
-            _navigationService.ShowDialog("MainView", data);
+            _navigationService.ShowDialog(data);
         }
 
         private void ColorPicker()

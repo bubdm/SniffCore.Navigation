@@ -182,6 +182,7 @@ namespace SniffCore.Navigation
         /// <summary>
         ///     Shows a modal window.
         /// </summary>
+        /// <remarks>The NavigationService asks the <see cref="IWindowProvider" /> for the main window and uses that if not null.</remarks>
         /// <param name="windowKey">The key of the window to generate.</param>
         /// <param name="viewModel">The ViewModel to set into the DataContext of the newly created window.</param>
         /// <returns>The task to await with the DialogResult.</returns>
@@ -194,7 +195,8 @@ namespace SniffCore.Navigation
             if (viewModel == null)
                 throw new ArgumentNullException(nameof(viewModel));
 
-            return ShowModalWindowImplAsync(null, windowKey, viewModel);
+            var mainWindow = _windowProvider.GetMainWindow();
+            return ShowModalWindowImplAsync(mainWindow, windowKey, viewModel);
         }
 
         /// <summary>
@@ -260,7 +262,10 @@ namespace SniffCore.Navigation
         /// <param name="hostId">The ID of the <see cref="NavigationPresenter" /> where to display the user control.</param>
         /// <param name="controlKey">The ID of the user control to create.</param>
         /// <param name="viewModel">The ViewModel which will be set into the DataContext of newly created user control.</param>
-        /// <returns>The task to await before or after the user control is shown. True if it was successfully (<see cref="IEditable"/>); otherwise false.</returns>
+        /// <returns>
+        ///     The task to await before or after the user control is shown. True if it was successfully (
+        ///     <see cref="IEditable" />); otherwise false.
+        /// </returns>
         /// <exception cref="ArgumentNullException">hostId is null.</exception>
         /// <exception cref="ArgumentNullException">controlKey is null.</exception>
         /// <exception cref="ArgumentNullException">viewModel is null.</exception>
@@ -326,6 +331,7 @@ namespace SniffCore.Navigation
         /// <summary>
         ///     Shows the message box.
         /// </summary>
+        /// <remarks>The NavigationService asks the <see cref="IWindowProvider" /> for the main window and uses that if not null.</remarks>
         /// <param name="messageBoxText">The text show in the message box.</param>
         /// <returns>The result of the message box after closing.</returns>
         /// <exception cref="ArgumentNullException">messageBoxText is null.</exception>
@@ -334,7 +340,10 @@ namespace SniffCore.Navigation
             if (messageBoxText == null)
                 throw new ArgumentNullException(nameof(messageBoxText));
 
-            return _messageBoxProvider.Show(messageBoxText);
+            var mainWindow = _windowProvider.GetMainWindow();
+            if (mainWindow == null)
+                return _messageBoxProvider.Show(messageBoxText);
+            return _messageBoxProvider.Show(mainWindow, messageBoxText);
         }
 
         /// <summary>
@@ -359,6 +368,7 @@ namespace SniffCore.Navigation
         /// <summary>
         ///     Shows the message box.
         /// </summary>
+        /// <remarks>The NavigationService asks the <see cref="IWindowProvider" /> for the main window and uses that if not null.</remarks>
         /// <param name="messageBoxText">The text show in the message box.</param>
         /// <param name="caption">The message box caption.</param>
         /// <returns>The result of the message box after closing.</returns>
@@ -371,7 +381,10 @@ namespace SniffCore.Navigation
             if (caption == null)
                 throw new ArgumentNullException(nameof(caption));
 
-            return _messageBoxProvider.Show(messageBoxText, caption);
+            var mainWindow = _windowProvider.GetMainWindow();
+            if (mainWindow == null)
+                return _messageBoxProvider.Show(messageBoxText, caption);
+            return _messageBoxProvider.Show(mainWindow, messageBoxText, caption);
         }
 
         /// <summary>
@@ -400,6 +413,7 @@ namespace SniffCore.Navigation
         /// <summary>
         ///     Shows the message box.
         /// </summary>
+        /// <remarks>The NavigationService asks the <see cref="IWindowProvider" /> for the main window and uses that if not null.</remarks>
         /// <param name="messageBoxText">The text show in the message box.</param>
         /// <param name="caption">The message box caption.</param>
         /// <param name="button">The buttons show in the message box.</param>
@@ -413,7 +427,10 @@ namespace SniffCore.Navigation
             if (caption == null)
                 throw new ArgumentNullException(nameof(caption));
 
-            return _messageBoxProvider.Show(messageBoxText, caption, button);
+            var mainWindow = _windowProvider.GetMainWindow();
+            if (mainWindow == null)
+                return _messageBoxProvider.Show(messageBoxText, caption, button);
+            return _messageBoxProvider.Show(mainWindow, messageBoxText, caption, button);
         }
 
         /// <summary>
@@ -443,6 +460,7 @@ namespace SniffCore.Navigation
         /// <summary>
         ///     Shows the message box.
         /// </summary>
+        /// <remarks>The NavigationService asks the <see cref="IWindowProvider" /> for the main window and uses that if not null.</remarks>
         /// <param name="messageBoxText">The text show in the message box.</param>
         /// <param name="caption">The message box caption.</param>
         /// <param name="button">The buttons show in the message box.</param>
@@ -460,7 +478,10 @@ namespace SniffCore.Navigation
             if (options == null)
                 throw new ArgumentNullException(nameof(options));
 
-            return _messageBoxProvider.Show(messageBoxText, caption, button, options);
+            var mainWindow = _windowProvider.GetMainWindow();
+            if (mainWindow == null)
+                return _messageBoxProvider.Show(messageBoxText, caption, button, options);
+            return _messageBoxProvider.Show(mainWindow, messageBoxText, caption, button, options);
         }
 
         /// <summary>
@@ -494,6 +515,7 @@ namespace SniffCore.Navigation
         /// <summary>
         ///     Shows the open file dialog.
         /// </summary>
+        /// <remarks>The NavigationService asks the <see cref="IWindowProvider" /> for the main window and uses that if not null.</remarks>
         /// <param name="openFileData">The open file dialog data.</param>
         /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
         /// <exception cref="ArgumentNullException">openFileData is null.</exception>
@@ -502,7 +524,10 @@ namespace SniffCore.Navigation
             if (openFileData == null)
                 throw new ArgumentNullException(nameof(openFileData));
 
-            return _dialogProvider.Show(openFileData);
+            var mainWindow = _windowProvider.GetMainWindow();
+            if (mainWindow == null)
+                return _dialogProvider.Show(openFileData);
+            return _dialogProvider.Show(mainWindow, openFileData);
         }
 
         /// <summary>
@@ -527,6 +552,7 @@ namespace SniffCore.Navigation
         /// <summary>
         ///     Shows the save file dialog.
         /// </summary>
+        /// <remarks>The NavigationService asks the <see cref="IWindowProvider" /> for the main window and uses that if not null.</remarks>
         /// <param name="saveFileData">The save file dialog data.</param>
         /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
         /// <exception cref="ArgumentNullException">saveFileData is null.</exception>
@@ -535,7 +561,10 @@ namespace SniffCore.Navigation
             if (saveFileData == null)
                 throw new ArgumentNullException(nameof(saveFileData));
 
-            return _dialogProvider.Show(saveFileData);
+            var mainWindow = _windowProvider.GetMainWindow();
+            if (mainWindow == null)
+                return _dialogProvider.Show(saveFileData);
+            return _dialogProvider.Show(mainWindow, saveFileData);
         }
 
         /// <summary>
@@ -560,6 +589,7 @@ namespace SniffCore.Navigation
         /// <summary>
         ///     Shows the browse folder dialog.
         /// </summary>
+        /// <remarks>The NavigationService asks the <see cref="IWindowProvider" /> for the main window and uses that if not null.</remarks>
         /// <param name="browseFolderData">The browse folder dialog data.</param>
         /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
         /// <exception cref="ArgumentNullException">browseFolderData is null.</exception>
@@ -568,7 +598,10 @@ namespace SniffCore.Navigation
             if (browseFolderData == null)
                 throw new ArgumentNullException(nameof(browseFolderData));
 
-            return _dialogProvider.Show(browseFolderData);
+            var mainWindow = _windowProvider.GetMainWindow();
+            if (mainWindow == null)
+                return _dialogProvider.Show(browseFolderData);
+            return _dialogProvider.Show(mainWindow, browseFolderData);
         }
 
         /// <summary>
@@ -593,6 +626,7 @@ namespace SniffCore.Navigation
         /// <summary>
         ///     Shows the color picker dialog.
         /// </summary>
+        /// <remarks>The NavigationService asks the <see cref="IWindowProvider" /> for the main window and uses that if not null.</remarks>
         /// <param name="colorPickerData">The color picker dialog data.</param>
         /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
         /// <exception cref="ArgumentNullException">colorPickerData is null.</exception>
@@ -601,7 +635,10 @@ namespace SniffCore.Navigation
             if (colorPickerData == null)
                 throw new ArgumentNullException(nameof(colorPickerData));
 
-            return _dialogProvider.Show(colorPickerData);
+            var mainWindow = _windowProvider.GetMainWindow();
+            if (mainWindow == null)
+                return _dialogProvider.Show(colorPickerData);
+            return _dialogProvider.Show(mainWindow, colorPickerData);
         }
 
         /// <summary>
@@ -626,6 +663,7 @@ namespace SniffCore.Navigation
         /// <summary>
         ///     Shows the font picker dialog.
         /// </summary>
+        /// <remarks>The NavigationService asks the <see cref="IWindowProvider" /> for the main window and uses that if not null.</remarks>
         /// <param name="fontPickerData">The font picker dialog data.</param>
         /// <returns>True of the dialog was closed with OK; otherwise false.</returns>
         /// <exception cref="ArgumentNullException">fontPickerData is null.</exception>
@@ -634,7 +672,10 @@ namespace SniffCore.Navigation
             if (fontPickerData == null)
                 throw new ArgumentNullException(nameof(fontPickerData));
 
-            return _dialogProvider.Show(fontPickerData);
+            var mainWindow = _windowProvider.GetMainWindow();
+            if (mainWindow == null)
+                return _dialogProvider.Show(fontPickerData);
+            return _dialogProvider.Show(mainWindow, fontPickerData);
         }
 
         /// <summary>

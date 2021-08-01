@@ -28,6 +28,19 @@ namespace SniffCore.Navigation.Windows
         Window GetOpenWindow(object windowKey);
 
         /// <summary>
+        ///     Returns the open window by the key.
+        /// </summary>
+        /// <param name="windowKey">The key of the window to return.</param>
+        /// <returns>The open window know by the key if exist; otherwise null.</returns>
+        Window TryGetOpenWindow(object windowKey);
+
+        /// <summary>
+        ///     Returns the main window.
+        /// </summary>
+        /// <returns>The main window if registered and open; otherwise null.</returns>
+        Window GetMainWindow();
+
+        /// <summary>
         ///     Creates a new user control by the key.
         /// </summary>
         /// <param name="controlKey">The key of the user control to create.</param>
