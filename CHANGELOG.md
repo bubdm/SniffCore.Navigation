@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 * Switch Animations
 
 ## [Unreleased]
+
+## [1.6.0] - 2021-08-01
 * Added Owner overloads for the system dialogs
 * Register a window as main window for optional fallback for modal windows, dialogs and messageboxes
 
